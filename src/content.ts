@@ -31,6 +31,16 @@ async function injectScript() {
     currentVideo.element.parentElement
       ?.querySelector("h1") // get the title
       ?.appendChild(watchedButton);
+
+    document.querySelector("video")?.addEventListener("ended", () => {
+      browser.runtime.sendMessage({
+        type: "setWatched",
+        videoId: currentVideo.videoId,
+        value: true,
+      } as BackgroundRequest);
+      watchedButton.textContent = "Watched";
+    });
+
     browser.runtime
       .sendMessage({
         type: "isWatched",
