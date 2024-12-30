@@ -11,8 +11,8 @@ type Option<T> = T | null;
 type Video = {
   title: string;
   channelName: string;
-  channelLink: string;
-  videoLink: string;
+  channelLink: URL;
+  videoLink: URL;
   duration: Option<string>; // Is not sent for Livestreams and on certain pages
   element: HTMLDivElement;
 };
@@ -44,11 +44,11 @@ function parseFeed(video_div: HTMLDivElement): Video {
     throw new VideoParseError("Could not find channel name");
   const channelName = channelLinkElement.textContent.trim();
 
-  const channelLink = channelLinkElement.getAttribute("href");
+  const channelLink = normalizeUrl(channelLinkElement.getAttribute("href"));
   if (!channelLink) throw new VideoParseError("Could not find channel link");
 
   const videoLinkElement = video_div.querySelector("div.thumbnail > a");
-  const videoLink = videoLinkElement?.getAttribute("href");
+  const videoLink = normalizeUrl(videoLinkElement?.getAttribute("href"));
   if (!videoLink) throw new VideoParseError("Could not find video link");
 
   const duration =
@@ -76,11 +76,11 @@ function parseWatchNext(video_div: HTMLDivElement): Video {
     throw new VideoParseError("Could not find channel name");
   const channelName = channelLinkElement.textContent.trim();
 
-  const channelLink = channelLinkElement.getAttribute("href");
+  const channelLink = normalizeUrl(channelLinkElement.getAttribute("href"));
   if (!channelLink) throw new VideoParseError("Could not find channel link");
 
   const videoLinkElement = video_div.querySelector("div.thumbnail > a");
-  const videoLink = videoLinkElement?.getAttribute("href");
+  const videoLink = normalizeUrl(videoLinkElement?.getAttribute("href"));
   if (!videoLink) throw new VideoParseError("Could not find video link");
 
   const duration =
@@ -95,6 +95,11 @@ function parseWatchNext(video_div: HTMLDivElement): Video {
     duration,
     element: video_div,
   };
+}
+
+function normalizeUrl(pathName: string | null | undefined): URL | null {
+  if (typeof pathName !== "string") return null;
+  return URL.parse(pathName, document.location.href);
 }
 
 // Run when document is loaded
