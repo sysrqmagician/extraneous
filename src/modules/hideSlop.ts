@@ -12,19 +12,23 @@ export function hideSlopFeedPage(
   let removedCount = 0;
   for (const video of feed_videos) {
     if (badTitleRegex.test(video.title)) {
-      video.element.remove();
+      hideDiv(video.element.parentElement as HTMLDivElement);
       removedCount++;
       continue;
     }
 
     if (!video.duration) continue;
     if (parseDurationSeconds(video.duration) < minDuration) {
-      video.element.remove();
+      hideDiv(video.element.parentElement as HTMLDivElement);
       removedCount++;
     }
   }
 
   console.log(`Removed ${removedCount} videos matching criteria.`);
+}
+
+function hideDiv(div: HTMLDivElement) {
+  div.style.display = "none";
 }
 
 /**
