@@ -11,6 +11,14 @@ export enum PageType {
 }
 
 async function injectScript() {
+  if (
+    !document.head
+      .querySelector("meta[property='og:site_name']")
+      ?.getAttribute("content")
+      ?.endsWith("Invidious")
+  )
+    return;
+
   let pageType;
   if (document.location.pathname === "/watch") {
     pageType = PageType.WatchVideo;
