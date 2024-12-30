@@ -9,13 +9,7 @@ export enum PageType {
 }
 
 async function injectScript() {
-  if (
-    !document.head
-      .querySelector("meta[property='og:site_name']")
-      ?.getAttribute("content")
-      ?.endsWith("Invidious")
-  )
-    return;
+  if (document.head.querySelector("link[title='Invidious']") === null) return;
 
   let pageType;
   if (document.location.pathname === "/watch") {
