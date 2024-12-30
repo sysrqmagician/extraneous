@@ -2,6 +2,7 @@ import { extractCurrentVideo, extractFeedFromPage } from "./extractor.ts";
 import { getConfig } from "./popup.ts";
 import { watchedFeedPage, watchedVideoPage } from "./modules/watched.ts";
 import { hideSlopFeedPage } from "./modules/hideSlop.ts";
+import { deArrowFeedPage } from "./modules/deArrow.ts";
 
 export enum PageType {
   WatchVideo,
@@ -39,6 +40,7 @@ async function injectScript() {
         config.hideSlop.minDuration,
         config.hideSlop.badTitleRegex,
       );
+    if (config.deArrow.enabled) deArrowFeedPage(feed_videos);
   }
 }
 

@@ -10,6 +10,9 @@ export type ExtensionConfig = {
     badTitleRegex: string;
     minDuration: string;
   };
+  deArrow: {
+    enabled: boolean;
+  };
 };
 
 export async function getConfig(): Promise<ExtensionConfig> {
@@ -31,6 +34,9 @@ const default_config = {
     enabled: true,
     badTitleRegex: "^.*#short.*$",
     minDuration: "00:10:00",
+  },
+  deArrow: {
+    enabled: true,
   },
 } as ExtensionConfig;
 
@@ -82,6 +88,17 @@ document.addEventListener("DOMContentLoaded", () => {
           browser.storage.local.set({ ["config"]: config });
         });
       }
+    });
+
+    const deArrowEnabledCheckbox = document.getElementById(
+      "deArrow_enabled",
+    ) as HTMLInputElement;
+    deArrowEnabledCheckbox.checked = config.deArrow.enabled;
+    deArrowEnabledCheckbox.addEventListener("change", function () {
+      getConfig().then((config) => {
+        config.deArrow.enabled = deArrowEnabledCheckbox.checked;
+        browser.storage.local.set({ ["config"]: config });
+      });
     });
   });
 });

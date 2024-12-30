@@ -2,15 +2,17 @@
 // @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
 
+export type BackgroundRequest =
+  | { type: "echo" }
+  | { type: "isWatched"; videoId: string }
+  | { type: "setWatched"; videoId: string; value: boolean }
+  | { type: "deArrow"; videoId: string };
 export type BackgroundResponse =
   | { type: "echo"; response: string }
   | { type: "isWatched"; value: boolean }
   | { type: "completed" }
-  | { type: "error"; description: string };
-export type BackgroundRequest =
-  | { type: "echo" }
-  | { type: "isWatched"; videoId: string }
-  | { type: "setWatched"; videoId: string; value: boolean };
+  | { type: "error"; description: string }
+  | { type: "deArrow"; title: string | null; thumbnailUri: string };
 
 type VideoRecord = {
   isWatched: boolean;
@@ -33,6 +35,8 @@ browser.runtime.onMessage.addListener(
           type: "echo",
           response: "Echo!",
         };
+      case "deArrow":
+        return await handleDeArrow(request);
       case "isWatched":
         return await handleIsWatched(request);
       case "setWatched":
@@ -42,6 +46,51 @@ browser.runtime.onMessage.addListener(
     }
   },
 );
+
+async function handleDeArrow(
+  request: Extract<BackgroundRequest, { type: "deArrow" }>,
+): Promise<BackgroundResponse> {
+  // TODO: Caching of titles
+  const videoKey = getVideoKey(request.videoId);
+  const thumbnailResponse = await fetch(
+    `https://dearrow-thumb.ajay.app/api/v1/getThumbnail?videoID=${request.videoId}`,
+  );
+  const thumbnailBlob = await thumbnailResponse.blob();
+  const thumbnailUri = await blobToUri(thumbnailBlob);
+
+  const titleResponse = await fetch(
+    `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
+  );
+  const titleResponseJson = await titleResponse.json();
+  const title = titleResponseJson[request.videoId]["titles"][0]["title"];
+
+  return {
+    type: "deArrow",
+    thumbnailUri,
+    title,
+  };
+}
+
+function blobToUri(blob: Blob): Promise<string> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.addEventListener("loadend", function () {
+      resolve(reader.result as string);
+    });
+  });
+}
+
+async function deArrowSha256Prefix(videoId: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(videoId);
+  const hash = await globalThis.crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hash));
+  return hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .substring(0, 4);
+}
 
 async function getRecord(videoId: string): Promise<VideoRecord | null> {
   const videoKey = getVideoKey(videoId);
