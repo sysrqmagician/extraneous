@@ -62,7 +62,13 @@ async function handleDeArrow(
     `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
   );
   const titleResponseJson = await titleResponse.json();
-  const title = titleResponseJson[request.videoId]["titles"][0]["title"];
+  let title;
+  try {
+    title = titleResponseJson[request.videoId]["titles"][0]["title"];
+  } catch (_) {
+    // No title returned
+    title = null;
+  }
 
   return {
     type: "deArrow",

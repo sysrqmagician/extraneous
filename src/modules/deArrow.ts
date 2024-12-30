@@ -27,7 +27,6 @@ export function deArrowVideoPage(currentVideo: VideoInfo) {
           titleElement.setAttribute("title", currentVideo.title); // Set tooltip to original title
         }
       }
-      backgroundResponse.title;
     });
 }
 
