@@ -1,13 +1,13 @@
 import { PageType } from "./content.ts";
 
-class VideoParseError extends Error {
+class VideoExtractorError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "VideoParseError";
+    this.name = "VideoExtractorError";
   }
 }
 
-type VideoInfo = {
+export type VideoInfo = {
   title: string;
   channelName: string;
   channelLink: URL;
@@ -30,21 +30,23 @@ function extractBasic(video_div: HTMLDivElement): VideoInfo {
   const title = video_div.querySelector(
     "div.video-card-row > a > p",
   )?.textContent;
-  if (!title) throw new VideoParseError("Could not find video title");
+  if (!title) throw new VideoExtractorError("Could not find video title");
   const channelLinkElement = video_div.querySelector("a[href^='/channel/']");
   const channelName = channelLinkElement?.textContent?.trim();
-  if (!channelName) throw new VideoParseError("Could not find channel name");
+  if (!channelName)
+    throw new VideoExtractorError("Could not find channel name");
   const channelLink = normalizeUrl(channelLinkElement?.getAttribute("href"));
-  if (!channelLink) throw new VideoParseError("Could not find channel link");
+  if (!channelLink)
+    throw new VideoExtractorError("Could not find channel link");
   const channelId = channelLink.pathname.split("/")[2];
-  if (!channelId) throw new VideoParseError("Could not find channel ID");
+  if (!channelId) throw new VideoExtractorError("Could not find channel ID");
 
   const videoLink = normalizeUrl(
     video_div.querySelector("div.thumbnail > a")?.getAttribute("href"),
   );
-  if (!videoLink) throw new VideoParseError("Could not find video link");
+  if (!videoLink) throw new VideoExtractorError("Could not find video link");
   const videoId = videoLink.searchParams.get("v");
-  if (!videoId) throw new VideoParseError("Could not find video ID");
+  if (!videoId) throw new VideoExtractorError("Could not find video ID");
 
   const duration =
     video_div.querySelector("div.thumbnail > div > p.length")?.textContent ||
@@ -70,28 +72,30 @@ function normalizeUrl(pathName: string | null | undefined): URL | null {
 export function extractCurrentVideo(): VideoInfo {
   const listenLink = document.querySelector("i.icon.ion-md-headset");
   const title = listenLink?.parentElement?.parentElement?.innerText.trim();
-  if (!title) throw new VideoParseError("Could not find video title");
+  if (!title) throw new VideoExtractorError("Could not find video title");
   const channelNameElement = document.querySelector("div.channel-profile");
   const channelName = channelNameElement?.textContent?.trim();
-  if (!channelName) throw new VideoParseError("Could not find channel name");
+  if (!channelName)
+    throw new VideoExtractorError("Could not find channel name");
   const channelLink = normalizeUrl(
     channelNameElement?.parentElement?.getAttribute("href"),
   );
-  if (!channelLink) throw new VideoParseError("Could not find channel link");
+  if (!channelLink)
+    throw new VideoExtractorError("Could not find channel link");
   const channelId = channelLink.pathname.split("/")[2];
-  if (!channelId) throw new VideoParseError("Could not find channel ID");
+  if (!channelId) throw new VideoExtractorError("Could not find channel ID");
   const videoLink = normalizeUrl(
     `${document.location.pathname}?v=${new URLSearchParams(document.location.search).get("v")}`,
   );
-  if (!videoLink) throw new VideoParseError("Could not find video link");
+  if (!videoLink) throw new VideoExtractorError("Could not find video link");
   const videoId = videoLink.searchParams.get("v");
-  if (!videoId) throw new VideoParseError("Could not find video ID");
+  if (!videoId) throw new VideoExtractorError("Could not find video ID");
 
   const player_container = document.getElementById(
     "player-container",
   ) as HTMLDivElement;
   if (!player_container)
-    throw new VideoParseError("Could not find player container");
+    throw new VideoExtractorError("Could not find player container");
 
   return {
     title,
