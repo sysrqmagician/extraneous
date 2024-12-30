@@ -20,7 +20,7 @@ export function deArrowVideoPage(currentVideo: VideoInfo) {
         { type: "deArrow" }
       >;
       const titleElement = document.querySelector("div.h-box > h1");
-      if (titleElement) {
+      if (backgroundResponse.title && titleElement) {
         const textChild = titleElement.childNodes[0];
         if (textChild && textChild.nodeType == Node.TEXT_NODE) {
           textChild.textContent = backgroundResponse.title;
