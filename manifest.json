@@ -12,5 +12,10 @@
       "matches": ["*://inv.nadeko.net/*"],
       "js": ["dist/content.js"]
     }
-  ]
+  ],
+  "background": {
+    "scripts": ["dist/background.js"],
+    "persistent": false,
+    "type": "module"
+  }
 }

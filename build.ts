@@ -5,10 +5,14 @@ async function build() {
   try {
     const result = await esbuild.build({
       plugins: [...denoPlugins()],
-      entryPoints: ["./src/content.ts", "./src/popup.ts"],
+      entryPoints: [
+        "./src/content.ts",
+        "./src/popup.ts",
+        "./src/background.ts",
+      ],
       outdir: "./dist",
       bundle: true,
-      format: "esm",
+      format: "iife",
       platform: "browser",
       target: "es2020",
     });

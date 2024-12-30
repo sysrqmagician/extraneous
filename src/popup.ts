@@ -1,21 +1,38 @@
+// @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
 
+export type ExtensionConfig = {
+  watched: {
+    enabled: boolean;
+  };
+};
+
+export async function getConfig(): Promise<ExtensionConfig> {
+  const records = await browser.storage.local.get("config");
+  let config = records["config"] as ExtensionConfig;
+  if (!config) {
+    await browser.storage.local.set({ ["config"]: default_config });
+    config = default_config;
+  }
+
+  return config;
+}
+
+const default_config = {
+  watched: {
+    enabled: true,
+  },
+} as ExtensionConfig;
+
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleButton = document.getElementById(
-    "toggleButton",
-  ) as HTMLButtonElement;
-
-  // Load saved state
-  browser.storage.local.get("enabled").then((result: { enabled: boolean }) => {
-    toggleButton.textContent = result.enabled ? "Disable" : "Enable";
-  });
-
-  // Toggle button handler
-  toggleButton.addEventListener("click", async () => {
-    const result = await browser.storage.local.get("enabled");
-    const newState = !result.enabled;
-
-    await browser.storage.local.set({ enabled: newState });
-    toggleButton.textContent = newState ? "Disable" : "Enable";
+  getConfig().then((config) => {
+    const watched_enabled_checkbox = document.getElementById(
+      "watched_enabled",
+    ) as HTMLInputElement;
+    watched_enabled_checkbox.checked = config.watched.enabled;
+    watched_enabled_checkbox.addEventListener("change", function () {
+      config.watched.enabled = watched_enabled_checkbox.checked;
+      browser.storage.local.set({ ["config"]: config });
+    });
   });
 });
