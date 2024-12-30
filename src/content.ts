@@ -2,7 +2,7 @@ import { extractCurrentVideo, extractFeedFromPage } from "./extractor.ts";
 import { getConfig } from "./popup.ts";
 import { watchedFeedPage, watchedVideoPage } from "./modules/watched.ts";
 import { hideSlopFeedPage } from "./modules/hideSlop.ts";
-import { deArrowFeedPage } from "./modules/deArrow.ts";
+import { deArrowFeedPage, deArrowVideoPage } from "./modules/deArrow.ts";
 
 export enum PageType {
   WatchVideo,
@@ -29,6 +29,7 @@ async function injectScript() {
   if (pageType == PageType.WatchVideo) {
     const currentVideo = extractCurrentVideo();
     if (config.watched.enabled) watchedVideoPage(currentVideo);
+    if (config.deArrow.enabled) deArrowVideoPage(currentVideo);
   }
 
   if (pageType == PageType.Feed || pageType == PageType.WatchVideo) {
