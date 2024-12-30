@@ -1,7 +1,4 @@
-// @deno-types="npm:@types/webextension-polyfill"
-import browser from "webextension-polyfill";
 import { extractCurrentVideo, extractFeedFromPage } from "./extractor.ts";
-import { BackgroundResponse, BackgroundRequest } from "./background.ts";
 import { getConfig } from "./popup.ts";
 import { watchedFeedPage, watchedVideoPage } from "./modules/watched.ts";
 
