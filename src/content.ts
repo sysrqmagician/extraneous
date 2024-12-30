@@ -1,8 +1,8 @@
 import { extractCurrentVideo, extractFeedFromPage } from "./extractor.ts";
 import { getConfig } from "./popup.ts";
 import { watchedFeedPage, watchedVideoPage } from "./modules/watched.ts";
-import { hideSlopFeedPage } from "./modules/hideSlop.ts";
-import { deArrowFeedPage, deArrowVideoPage } from "./modules/deArrow.ts";
+import { hideSlopFeedPage } from "./modules/hideslop.ts";
+import { deArrowFeedPage, deArrowVideoPage } from "./modules/dearrow.ts";
 
 export enum PageType {
   WatchVideo,
