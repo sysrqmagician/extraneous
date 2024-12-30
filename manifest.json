@@ -17,5 +17,10 @@
     "scripts": ["dist/background.js"],
     "persistent": false,
     "type": "module"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "extraneous@sysrqmagician.github.io"
+    }
   }
 }
