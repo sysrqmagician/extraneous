@@ -7,13 +7,12 @@ class VideoParseError extends Error {
   }
 }
 
-type Option<T> = T | null;
 type Video = {
   title: string;
   channelName: string;
   channelLink: URL;
   videoLink: URL;
-  duration: Option<string>; // Is not sent for Livestreams and on certain pages
+  duration: string | null; // Is not sent for Livestreams and on certain pages
   element: HTMLDivElement;
 };
 
