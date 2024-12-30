@@ -3,7 +3,7 @@ import { denoPlugins } from "jsr:@luca/esbuild-deno-loader";
 
 async function build() {
   try {
-    const result = await esbuild.build({
+    const _result = await esbuild.build({
       plugins: [...denoPlugins()],
       entryPoints: [
         "./src/content.ts",
