@@ -1,6 +1,7 @@
 import { extractCurrentVideo, extractFeedFromPage } from "./extractor.ts";
 import { getConfig } from "./popup.ts";
 import { watchedFeedPage, watchedVideoPage } from "./modules/watched.ts";
+import { hideSlopFeedPage } from "./modules/hideSlop.ts";
 
 export enum PageType {
   WatchVideo,
@@ -32,6 +33,12 @@ async function injectScript() {
   if (pageType == PageType.Feed || pageType == PageType.WatchVideo) {
     const feed_videos = extractFeedFromPage(pageType);
     if (config.watched.enabled) watchedFeedPage(feed_videos);
+    if (config.hideSlop.enabled)
+      hideSlopFeedPage(
+        feed_videos,
+        config.hideSlop.minDuration,
+        config.hideSlop.badTitleRegex,
+      );
   }
 }
 

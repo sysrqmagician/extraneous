@@ -19,6 +19,13 @@
         <h4>Highlight Watched Videos</h4>
         <input id="watched_enabled" type="checkbox"></input>
         <label for="watched_enabled">Enabled</label>
+        <h4>Hide Videos</h4>
+        <input id="hideSlop_enabled" type="checkbox"></input>
+        <label for="hideSlop_enabled">Enabled</label>
+        <input id="hideSlop_minDuration" type="text" title="[HH:MM:SS] Shorter videos will be removed"></input>
+        <label for="hideSlop_minDuration">Minimum Duration</label>
+        <input id="hideSlop_badTitleRegex" type="text" title="Videos with matching titles will be removed"></input>
+        <label for="hideSlop_badTitleRegex">Title Regex</label>
         <script src="../dist/popup.js"></script>
     </body>
 </html>
