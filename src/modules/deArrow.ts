@@ -8,7 +8,29 @@ type DeArrowData = {
   title: string;
 };
 
-export function deArrowVideoPage(currentVideo: VideoInfo) {}
+export function deArrowVideoPage(currentVideo: VideoInfo) {
+  browser.runtime
+    .sendMessage({
+      type: "deArrow",
+      videoId: currentVideo.videoId,
+    } as BackgroundRequest)
+    .then((response) => {
+      const backgroundResponse = response as Extract<
+        BackgroundResponse,
+        { type: "deArrow" }
+      >;
+      const titleElement = document.querySelector("div.h-box > h1");
+      if (titleElement) {
+        const textChild = titleElement.childNodes[0];
+        if (textChild && textChild.nodeType == Node.TEXT_NODE) {
+          textChild.textContent = backgroundResponse.title;
+          titleElement.setAttribute("title", currentVideo.title); // Set tooltip to original title
+        }
+      }
+      backgroundResponse.title;
+    });
+}
+
 export function deArrowFeedPage(feed_videos: Array<VideoInfo>) {
   for (const video of feed_videos) {
     browser.runtime
@@ -29,6 +51,7 @@ export function deArrowFeedPage(feed_videos: Array<VideoInfo>) {
           "div.video-card-row > a > p[dir='auto']",
         );
         if (backgroundResponse.title && titleElement) {
+          titleElement.setAttribute("title", video.title); // Set tooltip to original title
           titleElement.textContent = backgroundResponse.title;
         }
       });
