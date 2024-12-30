@@ -24,6 +24,10 @@ function injectScript() {
     .values()
     .map((x) => x.parentElement as HTMLDivElement);
 
+  // It is likely that the document will have breaking changes,
+  // so I split these into methods for easy maintenance.
+  //
+  // For now, they are all using the same parser.
   if (document.location.pathname === "/watch") {
     videos = Array.from(video_iterator.map((x) => parseWatchNext(x)));
   } else if (document.location.pathname.startsWith("/feed")) {
@@ -34,55 +38,28 @@ function injectScript() {
 }
 
 function parseFeed(video_div: HTMLDivElement): Video {
-  const titleElement = video_div.querySelector("div.video-card-row > a > p");
-  if (!titleElement?.textContent)
-    throw new VideoParseError("Could not find video title");
-  const title = titleElement.textContent;
-
-  const channelLinkElement = video_div.querySelector("a[href^='/channel/']");
-  if (!channelLinkElement?.textContent)
-    throw new VideoParseError("Could not find channel name");
-  const channelName = channelLinkElement.textContent.trim();
-
-  const channelLink = normalizeUrl(channelLinkElement.getAttribute("href"));
-  if (!channelLink) throw new VideoParseError("Could not find channel link");
-
-  const videoLinkElement = video_div.querySelector("div.thumbnail > a");
-  const videoLink = normalizeUrl(videoLinkElement?.getAttribute("href"));
-  if (!videoLink) throw new VideoParseError("Could not find video link");
-
-  const duration =
-    video_div.querySelector("div.thumbnail > div > p.length")?.textContent ||
-    null;
-
-  return {
-    title,
-    channelName,
-    channelLink,
-    videoLink,
-    duration,
-    element: video_div,
-  };
+  return parseBasic(video_div);
 }
 
 function parseWatchNext(video_div: HTMLDivElement): Video {
-  const titleElement = video_div.querySelector("div.video-card-row > a > p");
-  if (!titleElement?.textContent)
-    throw new VideoParseError("Could not find video title");
-  const title = titleElement.textContent;
+  return parseBasic(video_div);
+}
 
+function parseBasic(video_div: HTMLDivElement): Video {
+  const title = video_div.querySelector(
+    "div.video-card-row > a > p",
+  )?.textContent;
+  if (!title) throw new VideoParseError("Could not find video title");
   const channelLinkElement = video_div.querySelector("a[href^='/channel/']");
-  if (!channelLinkElement?.textContent)
-    throw new VideoParseError("Could not find channel name");
-  const channelName = channelLinkElement.textContent.trim();
-
-  const channelLink = normalizeUrl(channelLinkElement.getAttribute("href"));
+  const channelName = channelLinkElement?.textContent?.trim();
+  if (!channelName) throw new VideoParseError("Could not find channel name");
+  const channelLink = normalizeUrl(channelLinkElement?.getAttribute("href"));
   if (!channelLink) throw new VideoParseError("Could not find channel link");
 
-  const videoLinkElement = video_div.querySelector("div.thumbnail > a");
-  const videoLink = normalizeUrl(videoLinkElement?.getAttribute("href"));
+  const videoLink = normalizeUrl(
+    video_div.querySelector("div.thumbnail > a")?.getAttribute("href"),
+  );
   if (!videoLink) throw new VideoParseError("Could not find video link");
-
   const duration =
     video_div.querySelector("div.thumbnail > div > p.length")?.textContent ||
     null;
