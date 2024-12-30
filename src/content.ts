@@ -39,6 +39,7 @@ async function injectScript() {
         value: true,
       } as BackgroundRequest);
       watchedButton.textContent = "Watched";
+      watchedButton.value = "1";
     });
 
     browser.runtime
