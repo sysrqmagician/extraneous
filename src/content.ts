@@ -18,7 +18,8 @@ async function injectScript() {
     pageType = PageType.WatchVideo;
   } else if (
     document.location.pathname.startsWith("/feed") ||
-    document.location.pathname.startsWith("/channel/")
+    document.location.pathname.startsWith("/channel/") ||
+    document.location.pathname.startsWith("/search")
   ) {
     pageType = PageType.Feed;
   } else {
