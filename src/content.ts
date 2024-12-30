@@ -4,6 +4,9 @@ import { extractCurrentVideo, extractFeedFromPage } from "./extractor.ts";
 import { BackgroundResponse, BackgroundRequest } from "./background.ts";
 import { getConfig } from "./popup.ts";
 
+const LABEL_WATCHED: string = "Watched";
+const LABEL_UNWATCHED: string = "Unwatched";
+
 export enum PageType {
   WatchVideo,
   Feed,
@@ -46,8 +49,7 @@ async function injectScript() {
         videoId: currentVideo.videoId,
         value: true,
       } as BackgroundRequest);
-      watchedButton.textContent = "Watched";
-      watchedButton.value = "1";
+      watchedButton.textContent = LABEL_WATCHED;
     });
 
     browser.runtime
@@ -60,20 +62,20 @@ async function injectScript() {
           BackgroundResponse,
           { type: "isWatched" }
         >;
-        watchedButton.value = backgroundResponse.value ? "1" : "0";
         watchedButton.textContent = backgroundResponse.value
-          ? "Watched"
-          : "Unwatched";
+          ? LABEL_WATCHED
+          : LABEL_UNWATCHED;
 
         watchedButton.addEventListener("click", function () {
-          const newValue = !(watchedButton.value === "1");
+          const newValue = !(watchedButton.textContent === LABEL_WATCHED);
           browser.runtime.sendMessage({
             type: "setWatched",
             videoId: currentVideo.videoId,
             value: newValue,
           } as BackgroundRequest);
-          watchedButton.value = newValue ? "1" : "0";
-          watchedButton.textContent = newValue ? "Watched" : "Unwatched";
+          watchedButton.textContent = newValue
+            ? LABEL_WATCHED
+            : LABEL_UNWATCHED;
           console.log(watchedButton.textContent);
         });
       });
