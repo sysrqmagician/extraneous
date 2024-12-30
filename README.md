@@ -4,6 +4,7 @@ A WebExtension for Invidious, written in TypeScript using Deno.
 ## Features
 - [x] Keep track of watched videos and higlight them.
 - [ ] Integrate with DeArrow API
+- [ ] Hide videos under certain duration
 - [ ] Create collections of channels
 
 
