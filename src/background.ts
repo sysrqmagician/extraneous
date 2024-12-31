@@ -2,11 +2,18 @@
 // @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
 
+/**
+ * Types of requests that can be sent to the background script
+ */
 export type BackgroundRequest =
   | { type: "echo" }
   | { type: "isWatched"; videoId: string }
   | { type: "setWatched"; videoId: string; value: boolean }
   | { type: "deArrow"; videoId: string };
+
+/**
+ * Types of responses that can be returned from the background script
+ */
 export type BackgroundResponse =
   | { type: "echo"; response: string }
   | { type: "isWatched"; value: boolean }
@@ -14,10 +21,16 @@ export type BackgroundResponse =
   | { type: "error"; description: string }
   | { type: "deArrow"; title: string | null; thumbnailUri: string | null };
 
+/**
+ * Record for storing video watch state
+ */
 type VideoRecord = {
   isWatched: boolean;
 };
 
+/**
+ * Cache record for storing integration data
+ */
 type VideoCache = {
   deArrowTitle: string;
   deArrowThumbnailTime: number;
@@ -51,6 +64,11 @@ browser.runtime.onMessage.addListener(
   },
 );
 
+/**
+ * Requests a thumbnail from the DeArrow API
+ * @param videoId YouTube video ID
+ * @param time Optional timestamp for the thumbnail
+ */
 async function requestThumbnail(
   videoId: string,
   time: number | null,
@@ -60,6 +78,10 @@ async function requestThumbnail(
   );
 }
 
+/**
+ * Handles deArrow requests by fetching title and thumbnail data
+ * @param request The deArrow request
+ */
 async function handleDeArrow(
   request: Extract<BackgroundRequest, { type: "deArrow" }>,
 ): Promise<BackgroundResponse> {
@@ -166,6 +188,10 @@ async function handleDeArrow(
   };
 }
 
+/**
+ * Converts a Blob to a data URI string
+ * @param blob The blob to convert
+ */
 function blobToUri(blob: Blob): Promise<string> {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -176,6 +202,10 @@ function blobToUri(blob: Blob): Promise<string> {
   });
 }
 
+/**
+ * Generates a SHA-256 prefix for a video ID
+ * @param videoId YouTube video ID
+ */
 async function deArrowSha256Prefix(videoId: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(videoId);
@@ -187,6 +217,10 @@ async function deArrowSha256Prefix(videoId: string): Promise<string> {
     .substring(0, 4);
 }
 
+/**
+ * Retrieves a video record from storage
+ * @param videoId YouTube video ID
+ */
 async function getRecord(videoId: string): Promise<VideoRecord | null> {
   const videoKey = getVideoKey(videoId);
   const storageResponse = await browser.storage.local.get(videoKey);
@@ -197,6 +231,10 @@ async function getRecord(videoId: string): Promise<VideoRecord | null> {
   return null;
 }
 
+/**
+ * Handles isWatched requests
+ * @param request The isWatched request
+ */
 async function handleIsWatched(
   request: Extract<BackgroundRequest, { type: "isWatched" }>,
 ): Promise<BackgroundResponse> {
@@ -211,6 +249,10 @@ async function handleIsWatched(
   return { type: "isWatched", value: false };
 }
 
+/**
+ * Handles setWatched requests
+ * @param request The setWatched request
+ */
 async function handleSetWatched(
   request: Extract<BackgroundRequest, { type: "setWatched" }>,
 ): Promise<BackgroundResponse> {
@@ -226,6 +268,10 @@ async function handleSetWatched(
   return { type: "completed" };
 }
 
+/**
+ * Generates a storage key for a video ID
+ * @param videoId YouTube video ID
+ */
 function getVideoKey(videoId: string): string {
   return `video_${videoId}`;
 }
