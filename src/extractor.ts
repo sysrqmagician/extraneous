@@ -148,7 +148,22 @@ export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
       videos = Array.from(video_iterator.map((x) => extractWatchNext(x)));
       break;
     case PageType.Feed:
-      videos = Array.from(video_iterator.map((x) => extractFeed(x)));
+      videos = Array.from(
+        video_iterator
+          .map((x) => {
+            // May be unable to extract information for privated videos
+            // TODO: Better handling
+            try {
+              return extractFeed(x);
+            } catch (e) {
+              console.log(
+                `Error while extracting video information for ${x}: ${e}`,
+              );
+              return null;
+            }
+          })
+          .filter((x) => x !== null),
+      );
       break;
   }
 
