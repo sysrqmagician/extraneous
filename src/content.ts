@@ -5,9 +5,9 @@ import {
   VideoInfo,
 } from "./extractor.ts";
 import { ExtensionConfig, getConfig } from "./popup.ts";
-import { watchedFeedPage, watchedVideoPage } from "./modules/watched.ts";
-import { hideSlopFeedPage } from "./modules/hideslop.ts";
-import { deArrowFeedPage, deArrowVideoPage } from "./modules/dearrow.ts";
+import { watchedFeed, watchedVideoPage } from "./modules/watched.ts";
+import { hideSlopFeed } from "./modules/hideslop.ts";
+import { deArrowFeed, deArrowVideoPage } from "./modules/dearrow.ts";
 
 export enum PageType {
   WatchVideo,
@@ -63,15 +63,15 @@ function callFeedModules(
   feedVideos: Array<VideoInfo>,
   pageType: PageType,
 ) {
-  if (config.watched.enabled) watchedFeedPage(feedVideos);
+  if (config.watched.enabled) watchedFeed(feedVideos);
   if (config.hideSlop.enabled)
-    hideSlopFeedPage(
+    hideSlopFeed(
       feedVideos,
       config.hideSlop.minDuration,
       config.hideSlop.badTitleRegex,
       pageType,
     );
-  if (config.deArrow.enabled) deArrowFeedPage(feedVideos);
+  if (config.deArrow.enabled) deArrowFeed(feedVideos);
 }
 
 if (document.readyState === "loading") {

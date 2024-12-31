@@ -53,7 +53,6 @@ export function watchedVideoPage(currentVideo: VideoInfo) {
           value: newValue,
         } as BackgroundRequest);
         watchedButton.textContent = newValue ? LABEL_WATCHED : LABEL_UNWATCHED;
-        console.log(watchedButton.textContent);
       });
     });
 }
@@ -62,7 +61,7 @@ export function watchedVideoPage(currentVideo: VideoInfo) {
  * Applies visual effects to watched videos in the feed
  * @param feed_videos Array of video information from the feed
  */
-export function watchedFeedPage(feed_videos: Array<VideoInfo>) {
+export function watchedFeed(feed_videos: Array<VideoInfo>) {
   for (const video of feed_videos) {
     browser.runtime
       .sendMessage({

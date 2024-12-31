@@ -35,7 +35,7 @@ export function deArrowVideoPage(currentVideo: VideoInfo) {
  * titles and thumbnails with community-submitted alternatives
  * @param feed_videos Array of video information from the feed
  */
-export function deArrowFeedPage(feed_videos: Array<VideoInfo>) {
+export function deArrowFeed(feed_videos: Array<VideoInfo>) {
   for (const video of feed_videos) {
     browser.runtime
       .sendMessage({

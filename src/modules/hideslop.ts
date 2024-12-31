@@ -7,7 +7,7 @@ import { VideoInfo } from "../extractor.ts";
  * @param minDurationString Minimum duration string as taken by {@link parseDurationSeconds}
  * @param badTitleRegexString Regex pattern to match titles that should be hidden
  */
-export function hideSlopFeedPage(
+export function hideSlopFeed(
   feed_videos: Array<VideoInfo>,
   minDurationString: string,
   badTitleRegexString: string,
