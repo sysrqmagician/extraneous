@@ -16,7 +16,11 @@ export type BackgroundResponse =
 
 type VideoRecord = {
   isWatched: boolean;
-  dearrow_cache: string | null;
+};
+
+type VideoCache = {
+  deArrowTitle: string;
+  deArrowThumbnail: string;
 };
 
 browser.runtime.onMessage.addListener(
@@ -50,8 +54,17 @@ browser.runtime.onMessage.addListener(
 async function handleDeArrow(
   request: Extract<BackgroundRequest, { type: "deArrow" }>,
 ): Promise<BackgroundResponse> {
-  // TODO: Caching of titles
   const videoKey = getVideoKey(request.videoId);
+  const cache_records = await browser.storage.session.get(videoKey);
+  if (videoKey in cache_records) {
+    const record = cache_records[videoKey] as VideoCache;
+    return {
+      type: "deArrow",
+      thumbnailUri: record.deArrowThumbnail,
+      title: record.deArrowTitle,
+    };
+  }
+
   const thumbnailResponse = await fetch(
     `https://dearrow-thumb.ajay.app/api/v1/getThumbnail?videoID=${request.videoId}`,
   );
@@ -69,6 +82,13 @@ async function handleDeArrow(
     // No title returned
     title = null;
   }
+
+  browser.storage.session.set({
+    [videoKey]: {
+      deArrowThumbnail: thumbnailUri,
+      deArrowTitle: title,
+    } as VideoCache,
+  });
 
   return {
     type: "deArrow",
