@@ -20,7 +20,6 @@ type VideoRecord = {
 
 type VideoCache = {
   deArrowTitle: string;
-  deArrowThumbnail: string;
 };
 
 browser.runtime.onMessage.addListener(
@@ -56,13 +55,11 @@ async function handleDeArrow(
 ): Promise<BackgroundResponse> {
   const videoKey = getVideoKey(request.videoId);
   const cache_records = await browser.storage.session.get(videoKey);
+
+  let title = null;
   if (videoKey in cache_records) {
     const record = cache_records[videoKey] as VideoCache;
-    return {
-      type: "deArrow",
-      thumbnailUri: record.deArrowThumbnail,
-      title: record.deArrowTitle,
-    };
+    title = record.deArrowTitle;
   }
 
   const thumbnailResponse = await fetch(
@@ -71,24 +68,29 @@ async function handleDeArrow(
   const thumbnailBlob = await thumbnailResponse.blob();
   const thumbnailUri = await blobToUri(thumbnailBlob);
 
-  const titleResponse = await fetch(
-    `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
-  );
-  const titleResponseJson = await titleResponse.json();
-  let title;
-  try {
-    title = titleResponseJson[request.videoId]["titles"][0]["title"];
-  } catch (_) {
-    // No title returned
-    title = null;
-  }
+  if (!title) {
+    const titleResponse = await fetch(
+      `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
+    );
 
-  browser.storage.session.set({
-    [videoKey]: {
-      deArrowThumbnail: thumbnailUri,
-      deArrowTitle: title,
-    } as VideoCache,
-  });
+    const titleResponseJson = await titleResponse.json();
+    try {
+      title = titleResponseJson[request.videoId]["titles"][0]["title"];
+      try {
+        browser.storage.session.set({
+          [videoKey]: {
+            deArrowTitle: title,
+          } as VideoCache,
+        });
+      } catch (_) {
+        // Unable to store, likely due to exceeded quota.
+        // TODO: Remove previous cache entries
+      }
+    } catch (_) {
+      // No title returned
+      title = null;
+    }
+  }
 
   return {
     type: "deArrow",
