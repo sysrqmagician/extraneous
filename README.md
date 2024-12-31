@@ -8,7 +8,7 @@ A WebExtension for Invidious, written in TypeScript using Deno.
   - [x] Display original title on hover
   - [ ] Special case for playlists
   - [x] Caching
-  - [ ] Fallback to X-Title as described in docs
+  - [x] Fallback to X-Title as described in docs
   - [x] Match thumbnail with branding request
   - [x] Retry with time on error
 - [x] Hide videos under certain duration or with title matching regex
