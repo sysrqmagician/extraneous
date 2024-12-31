@@ -12,6 +12,7 @@ async function build() {
       ],
       outdir: "./dist",
       bundle: true,
+      minify: true,
       format: "iife",
       platform: "browser",
       target: "es2020",
