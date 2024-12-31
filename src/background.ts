@@ -111,51 +111,55 @@ async function handleDeArrow(
       `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
     );
     const brandingResponseJson = await brandingResponse.json();
-    if (brandingResponse.status != 200 || !brandingResponseJson) {
-      throw new Error(`DeArrow branding request for ${videoKey} failed.`);
-    }
-
-    try {
-      thumbnailTime =
-        brandingResponseJson[request.videoId]["thumbnails"][0]["timestamp"];
-    } catch (_) {
+    if (brandingResponse.status == 200 && brandingResponseJson) {
       try {
         thumbnailTime =
-          brandingResponseJson[request.videoId]["randomTime"] *
-          brandingResponseJson[request.videoId]["videoDuration"];
+          brandingResponseJson[request.videoId]["thumbnails"][0]["timestamp"];
       } catch (_) {
-        thumbnailTime = null;
+        try {
+          thumbnailTime =
+            brandingResponseJson[request.videoId]["randomTime"] *
+            brandingResponseJson[request.videoId]["videoDuration"];
+        } catch (_) {
+          thumbnailTime = null;
+        }
       }
-    }
 
-    if (!thumbnailTime && thumbnailUri) {
+      if (!thumbnailTime && thumbnailUri) {
+        try {
+          const original =
+            brandingResponseJson[request.videoId]["thumbnails"][0]["original"];
+          if (original) {
+            // Removing previously loaded thumbnail since original is specified in branding response
+            thumbnailUri = null;
+          }
+        } catch (_) {
+          // Keep thumbnail; there was no branding thumbnail data
+        }
+      }
+
       try {
-        const original =
-          brandingResponseJson[request.videoId]["thumbnails"][0]["original"];
-        if (original) {
-          // Removing previously loaded thumbnail since original is specified in branding response
-          thumbnailUri = null;
+        title = brandingResponseJson[request.videoId]["titles"][0]["title"];
+        try {
+          browser.storage.session.set({
+            [videoKey]: {
+              deArrowTitle: title,
+            } as VideoCache,
+          });
+        } catch (_) {
+          // Unable to store, likely due to exceeded quota.
+          // TODO: Remove previous cache entries
         }
       } catch (_) {
-        // Keep thumbnail; there was no branding thumbnail data
+        // No title returned
+        title = null;
       }
-    }
-
-    try {
-      title = brandingResponseJson[request.videoId]["titles"][0]["title"];
-      try {
-        browser.storage.session.set({
-          [videoKey]: {
-            deArrowTitle: title,
-          } as VideoCache,
-        });
-      } catch (_) {
-        // Unable to store, likely due to exceeded quota.
-        // TODO: Remove previous cache entries
+    } else {
+      // Fall back to X-Title returned from thumbnail server in the event of a main server outage.
+      const x_title = thumbnailResponse.headers.get("X-Title");
+      if (x_title) {
+        title = x_title;
       }
-    } catch (_) {
-      // No title returned
-      title = null;
     }
   }
 
