@@ -12,6 +12,9 @@ A WebExtension for Invidious, written in TypeScript using Deno.
   - [ ] Delayed retry on error
 - [x] Hide videos under certain duration or with title matching regex
 - [ ] Create collections of channels
+- [ ] Cobalt.tools integration
+  - [ ] Replace downloader section with cobalt.tools integration
+  - [ ] Offer to stream from cobalt.tools download on watch page error (if possible)
 
 
 ## Installing
