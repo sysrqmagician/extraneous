@@ -1,4 +1,6 @@
 # Extraneous
+<img src="https://raw.githubusercontent.com/sysrqmagician/extraneous/refs/heads/main/assets/logo.png" width="150" />
+
 A WebExtension for Invidious, written in TypeScript using Deno.
 
 ## Features
