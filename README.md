@@ -3,7 +3,13 @@ A WebExtension for Invidious, written in TypeScript using Deno.
 
 ## Features
 - [x] Keep track of watched videos and higlight them.
-- [x] Integrate with DeArrow API
+- [ ] DeArrow
+  - [x] Basic DeArrow loading for video feeds and watched video
+  - [x] Display original title on hover 
+  - [ ] Special case for playlists
+  - [ ] Caching
+  - [ ] Fallback to X-Title as described in docs
+  - [ ] Delayed retry on error
 - [x] Hide videos under certain duration or with title matching regex
 - [ ] Create collections of channels
 
