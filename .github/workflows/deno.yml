@@ -27,6 +27,6 @@ jobs:
       #   run: deno fmt --check
 
       - name: Run check
-        run: deno check src/*
+        run: deno check build.ts src/
       - name: Run linter
         run: deno lint
