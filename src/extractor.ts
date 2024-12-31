@@ -18,14 +18,26 @@ export type VideoInfo = {
   element: HTMLDivElement;
 };
 
+/**
+ * Extracts video info from a feed video div element
+ * @param video_div The video div element to extract from
+ */
 function extractFeed(video_div: HTMLDivElement): VideoInfo {
   return extractBasic(video_div);
 }
 
+/**
+ * Extracts video info from a watch next video div element
+ * @param video_div The video div element to extract from
+ */
 function extractWatchNext(video_div: HTMLDivElement): VideoInfo {
   return extractBasic(video_div);
 }
 
+/**
+ * Basic extraction logic shared between feed and watch next videos
+ * @param video_div The video div element to extract from
+ */
 function extractBasic(video_div: HTMLDivElement): VideoInfo {
   const title = video_div.querySelector(
     "div.video-card-row > a > p",
@@ -64,11 +76,18 @@ function extractBasic(video_div: HTMLDivElement): VideoInfo {
   };
 }
 
+/**
+ * Converts a relative URL string to a proper {@link URL}, using the current page as base
+ * @param pathName The path to convert
+ */
 function normalizeUrl(pathName: string | null | undefined): URL | null {
   if (typeof pathName !== "string") return null;
   return URL.parse(pathName, document.location.href);
 }
 
+/**
+ * Extracts information about the currently playing video
+ */
 export function extractCurrentVideo(): VideoInfo {
   const listenLink = document.querySelector("i.icon.ion-md-headset");
   const title = listenLink?.parentElement?.parentElement?.innerText.trim();
@@ -109,6 +128,10 @@ export function extractCurrentVideo(): VideoInfo {
   };
 }
 
+/**
+ * Extracts video information from all videos in the current page
+ * @param pageType Type of page being processed
+ */
 export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
   let videos: Array<VideoInfo> = [];
   const video_iterator = document
