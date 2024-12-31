@@ -12,7 +12,7 @@ export type BackgroundResponse =
   | { type: "isWatched"; value: boolean }
   | { type: "completed" }
   | { type: "error"; description: string }
-  | { type: "deArrow"; title: string | null; thumbnailUri: string };
+  | { type: "deArrow"; title: string | null; thumbnailUri: string | null };
 
 type VideoRecord = {
   isWatched: boolean;
@@ -20,6 +20,7 @@ type VideoRecord = {
 
 type VideoCache = {
   deArrowTitle: string;
+  deArrowThumbnailTime: number;
 };
 
 browser.runtime.onMessage.addListener(
@@ -50,6 +51,15 @@ browser.runtime.onMessage.addListener(
   },
 );
 
+async function requestThumbnail(
+  videoId: string,
+  time: number | null,
+): Promise<Response> {
+  return await fetch(
+    `https://dearrow-thumb.ajay.app/api/v1/getThumbnail?videoID=${videoId}${time !== null ? `&time=${time}` : ""}`,
+  );
+}
+
 async function handleDeArrow(
   request: Extract<BackgroundRequest, { type: "deArrow" }>,
 ): Promise<BackgroundResponse> {
@@ -57,25 +67,60 @@ async function handleDeArrow(
   const cache_records = await browser.storage.session.get(videoKey);
 
   let title = null;
+  let thumbnailTime = null;
   if (videoKey in cache_records) {
     const record = cache_records[videoKey] as VideoCache;
     title = record.deArrowTitle;
+    thumbnailTime = record.deArrowThumbnailTime;
   }
 
-  const thumbnailResponse = await fetch(
-    `https://dearrow-thumb.ajay.app/api/v1/getThumbnail?videoID=${request.videoId}`,
-  );
-  const thumbnailBlob = await thumbnailResponse.blob();
-  const thumbnailUri = await blobToUri(thumbnailBlob);
+  let thumbnailResponse = await requestThumbnail(request.videoId, null);
+  let thumbnailBlob = await thumbnailResponse.blob();
 
-  if (!title) {
-    const titleResponse = await fetch(
+  let thumbnailUri = null;
+  let cachedThumbnailTime = null;
+  if (thumbnailBlob.size !== 0) {
+    thumbnailUri = await blobToUri(thumbnailBlob);
+    cachedThumbnailTime = thumbnailResponse.headers.get("X-Timestamp");
+  }
+
+  if (!title && !thumbnailTime) {
+    const brandingResponse = await fetch(
       `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
     );
+    const brandingResponseJson = await brandingResponse.json();
+    if (brandingResponse.status != 200 || !brandingResponseJson) {
+      throw new Error(`DeArrow branding request for ${videoKey} failed.`);
+    }
 
-    const titleResponseJson = await titleResponse.json();
     try {
-      title = titleResponseJson[request.videoId]["titles"][0]["title"];
+      thumbnailTime =
+        brandingResponseJson[request.videoId]["thumbnails"][0]["timestamp"];
+    } catch (_) {
+      try {
+        thumbnailTime =
+          brandingResponseJson[request.videoId]["randomTime"] *
+          brandingResponseJson[request.videoId]["videoDuration"];
+      } catch (_) {
+        thumbnailTime = null;
+      }
+    }
+
+    if (!thumbnailTime && thumbnailUri) {
+      try {
+        const original =
+          brandingResponseJson[request.videoId]["thumbnails"][0]["original"];
+        if (original) {
+          // Removing previously loaded thumbnail since original is specified in branding response
+          thumbnailUri = null;
+        }
+      } catch (_) {
+        // Keep thumbnail; there was no branding thumbnail data
+      }
+    }
+
+    try {
+      title = brandingResponseJson[request.videoId]["titles"][0]["title"];
       try {
         browser.storage.session.set({
           [videoKey]: {
@@ -89,6 +134,28 @@ async function handleDeArrow(
     } catch (_) {
       // No title returned
       title = null;
+    }
+  }
+
+  // Request again, if
+  // there wasn't a thumbnail cached, try again with the provided time
+  // OR if there was a cached thumbnail that doesn't match the branding timestamp
+  if (
+    (thumbnailTime &&
+      thumbnailBlob.size == 0 &&
+      thumbnailResponse.status == 204) ||
+    (thumbnailUri &&
+      cachedThumbnailTime &&
+      thumbnailTime &&
+      cachedThumbnailTime !== thumbnailTime)
+  ) {
+    thumbnailResponse = await requestThumbnail(
+      request.videoId,
+      thumbnailTime as number,
+    );
+    thumbnailBlob = await thumbnailResponse.blob();
+    if (thumbnailBlob.size !== 0) {
+      thumbnailUri = await blobToUri(thumbnailBlob);
     }
   }
 

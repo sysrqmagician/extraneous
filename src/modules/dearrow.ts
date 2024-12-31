@@ -42,9 +42,12 @@ export function deArrowFeedPage(feed_videos: Array<VideoInfo>) {
           BackgroundResponse,
           { type: "deArrow" }
         >;
-        video.element
-          .querySelector("img.thumbnail")
-          ?.setAttribute("src", backgroundResponse.thumbnailUri);
+
+        if (backgroundResponse.thumbnailUri) {
+          video.element
+            .querySelector("img.thumbnail")
+            ?.setAttribute("src", backgroundResponse.thumbnailUri);
+        }
 
         const titleElement = video.element.querySelector(
           "div.video-card-row > a > p[dir='auto']",

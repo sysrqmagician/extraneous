@@ -9,7 +9,8 @@ A WebExtension for Invidious, written in TypeScript using Deno.
   - [ ] Special case for playlists
   - [x] Caching
   - [ ] Fallback to X-Title as described in docs
-  - [ ] Delayed retry on error
+  - [x] Match thumbnail with branding request
+  - [x] Retry with time on error
 - [x] Hide videos under certain duration or with title matching regex
 - [ ] Create collections of channels
 - [ ] Cobalt.tools integration
