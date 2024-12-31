@@ -220,18 +220,19 @@ export async function extractFeedFromMiniPlaylist(): Promise<Array<VideoInfo>> {
   const playListPromise = new Promise<void>((resolve) => {
     const observer = new MutationObserver((mutationRecords) => {
       for (const entry of mutationRecords) {
-        for (const addedNode of entry.addedNodes) {
-          if (addedNode.nodeType == Node.ELEMENT_NODE) {
-            const addedElement = addedNode as Element;
-            if (
-              addedElement.matches(
+        const innerListDiv = entry.addedNodes
+          .entries()
+          .find(
+            (x) =>
+              x[1].nodeType == Node.ELEMENT_NODE &&
+              (x[1] as Element).matches(
                 ".pure-menu.pure-menu-scrollable.playlist-restricted",
-              )
-            ) {
-              observer.disconnect();
-              resolve();
-            }
-          }
+              ),
+          );
+
+        if (innerListDiv) {
+          observer.disconnect();
+          resolve();
         }
       }
     });
