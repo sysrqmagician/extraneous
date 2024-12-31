@@ -6,7 +6,7 @@ A WebExtension for Invidious, written in TypeScript using Deno.
 - [ ] DeArrow
   - [x] Basic DeArrow loading for video feeds and watched video
   - [x] Display original title on hover
-  - [ ] Special case for playlists
+  - [ ] Proper playlist handling
   - [x] Caching
   - [x] Fallback to X-Title as described in docs
   - [x] Match thumbnail with branding request

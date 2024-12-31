@@ -19,7 +19,8 @@ async function injectScript() {
   } else if (
     document.location.pathname.startsWith("/feed") ||
     document.location.pathname.startsWith("/channel/") ||
-    document.location.pathname.startsWith("/search")
+    document.location.pathname.startsWith("/search") ||
+    document.location.pathname.startsWith("/playlist")
   ) {
     pageType = PageType.Feed;
   } else {
