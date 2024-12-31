@@ -185,7 +185,7 @@ export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
       videos = Array.from(
         video_iterator
           .map((x) => {
-            // May be unable to extract information for privated videos
+            // May be unable to extract information for privated videos on playlists
             // TODO: Better handling
             try {
               return extractFeed(x);
@@ -245,6 +245,17 @@ export async function extractFeedFromMiniPlaylist(): Promise<Array<VideoInfo>> {
     playlistDiv
       .querySelectorAll("div > ol > li")
       .values()
-      .map((x) => extractMiniPlaylistVideo(x)),
+      .map((x) => {
+        // May be unable to extract information for privated videos on playlists
+        try {
+          return extractMiniPlaylistVideo(x);
+        } catch (e) {
+          console.log(
+            `Error while extracting video information for ${x}: ${e}`,
+          );
+          return null;
+        }
+      })
+      .filter((x) => x !== null),
   );
 }
