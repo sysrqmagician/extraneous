@@ -1,5 +1,10 @@
-import { extractCurrentVideo, extractFeedFromPage } from "./extractor.ts";
-import { getConfig } from "./popup.ts";
+import {
+  extractCurrentVideo,
+  extractFeedFromMiniPlaylist,
+  extractFeedFromPage,
+  VideoInfo,
+} from "./extractor.ts";
+import { ExtensionConfig, getConfig } from "./popup.ts";
 import { watchedFeedPage, watchedVideoPage } from "./modules/watched.ts";
 import { hideSlopFeedPage } from "./modules/hideslop.ts";
 import { deArrowFeedPage, deArrowVideoPage } from "./modules/dearrow.ts";
@@ -8,6 +13,7 @@ export enum PageType {
   WatchVideo,
   Feed,
   Unknown,
+  MiniPlaylist,
 }
 
 async function injectScript() {
@@ -35,16 +41,37 @@ async function injectScript() {
   }
 
   if (pageType == PageType.Feed || pageType == PageType.WatchVideo) {
-    const feed_videos = extractFeedFromPage(pageType);
-    if (config.watched.enabled) watchedFeedPage(feed_videos);
-    if (config.hideSlop.enabled)
-      hideSlopFeedPage(
-        feed_videos,
-        config.hideSlop.minDuration,
-        config.hideSlop.badTitleRegex,
+    callFeedModules(config, extractFeedFromPage(pageType), pageType);
+
+    const searchParams = new URLSearchParams(document.location.search);
+    if (
+      pageType == PageType.WatchVideo &&
+      searchParams &&
+      searchParams.get("list")
+    ) {
+      callFeedModules(
+        config,
+        await extractFeedFromMiniPlaylist(),
+        PageType.MiniPlaylist,
       );
-    if (config.deArrow.enabled) deArrowFeedPage(feed_videos);
+    }
   }
+}
+
+function callFeedModules(
+  config: ExtensionConfig,
+  feedVideos: Array<VideoInfo>,
+  pageType: PageType,
+) {
+  if (config.watched.enabled) watchedFeedPage(feedVideos);
+  if (config.hideSlop.enabled)
+    hideSlopFeedPage(
+      feedVideos,
+      config.hideSlop.minDuration,
+      config.hideSlop.badTitleRegex,
+      pageType,
+    );
+  if (config.deArrow.enabled) deArrowFeedPage(feedVideos);
 }
 
 if (document.readyState === "loading") {

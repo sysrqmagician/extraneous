@@ -1,3 +1,4 @@
+import { PageType } from "../content.ts";
 import { VideoInfo } from "../extractor.ts";
 
 /**
@@ -10,6 +11,7 @@ export function hideSlopFeedPage(
   feed_videos: Array<VideoInfo>,
   minDurationString: string,
   badTitleRegexString: string,
+  pageType: PageType,
 ) {
   const minDuration = parseDurationSeconds(minDurationString);
   if (Number.isNaN(minDuration)) return;
@@ -17,15 +19,21 @@ export function hideSlopFeedPage(
 
   let removedCount = 0;
   for (const video of feed_videos) {
+    const toRemove = (
+      pageType === PageType.MiniPlaylist
+        ? video.element
+        : video.element.parentElement
+    ) as HTMLDivElement;
+
     if (badTitleRegex.test(video.title)) {
-      hideDiv(video.element.parentElement as HTMLDivElement);
+      hideDiv(toRemove);
       removedCount++;
       continue;
     }
 
     if (!video.duration) continue;
     if (parseDurationSeconds(video.duration) < minDuration) {
-      hideDiv(video.element.parentElement as HTMLDivElement);
+      hideDiv(toRemove);
       removedCount++;
     }
   }

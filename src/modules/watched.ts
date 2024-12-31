@@ -75,7 +75,7 @@ export function watchedFeedPage(feed_videos: Array<VideoInfo>) {
           { type: "isWatched" }
         >;
         if (backgroundResponse.value) {
-          video.element.style.filter = "blur(1px) sepia(1)";
+          (video.element as HTMLDivElement).style.filter = "blur(1px) sepia(1)";
         }
       });
   }

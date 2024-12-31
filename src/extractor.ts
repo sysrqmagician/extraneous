@@ -10,12 +10,12 @@ class VideoExtractorError extends Error {
 export type VideoInfo = {
   title: string;
   channelName: string;
-  channelLink: URL;
-  channelId: string;
+  channelLink: URL | null;
+  channelId: string | null;
   videoLink: URL;
   videoId: string;
   duration: string | null; // Is not sent for Livestreams and on certain pages
-  element: HTMLDivElement;
+  element: Element;
 };
 
 /**
@@ -129,6 +129,40 @@ export function extractCurrentVideo(): VideoInfo {
 }
 
 /**
+ * Extracts information about a video displayed in the sidebar playlist view
+ */
+export function extractMiniPlaylistVideo(videoLi: Element): VideoInfo {
+  const title = videoLi.querySelector("a > p:nth-child(2)")?.textContent;
+  if (!title) throw new VideoExtractorError("Could not find video title");
+  const channelName = videoLi
+    .querySelector("a > p:nth-child(3) > b")
+    ?.textContent?.trim();
+  if (!channelName)
+    throw new VideoExtractorError("Could not find channel name");
+
+  const videoLink = normalizeUrl(
+    videoLi.querySelector("a")?.getAttribute("href"),
+  );
+  if (!videoLink) throw new VideoExtractorError("Could not find video link");
+  const videoId = videoLink.searchParams.get("v");
+  if (!videoId) throw new VideoExtractorError("Could not find video ID");
+
+  const duration =
+    videoLi.querySelector("div.thumbnail > p.length")?.textContent || null;
+
+  return {
+    title,
+    channelName,
+    channelLink: null,
+    channelId: null,
+    videoLink,
+    videoId,
+    duration,
+    element: videoLi,
+  };
+}
+
+/**
  * Extracts video information from all videos in the current page
  * @param pageType Type of page being processed
  */
@@ -168,4 +202,48 @@ export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
   }
 
   return videos;
+}
+
+/**
+ * Extracts video information from all videos in the sidebar playlist view
+ */
+export async function extractFeedFromMiniPlaylist(): Promise<Array<VideoInfo>> {
+  const playlistDiv = document.getElementById("playlist");
+  if (!playlistDiv) {
+    throw new VideoExtractorError("Could not find playlistDiv");
+  }
+  const observerConfig: MutationObserverInit = {
+    childList: true,
+    subtree: true,
+  };
+
+  const playListPromise = new Promise<void>((resolve) => {
+    const observer = new MutationObserver((mutationRecords) => {
+      for (const entry of mutationRecords) {
+        for (const addedNode of entry.addedNodes) {
+          if (addedNode.nodeType == Node.ELEMENT_NODE) {
+            const addedElement = addedNode as Element;
+            if (
+              addedElement.matches(
+                ".pure-menu.pure-menu-scrollable.playlist-restricted",
+              )
+            ) {
+              observer.disconnect();
+              resolve();
+            }
+          }
+        }
+      }
+    });
+
+    observer.observe(playlistDiv, observerConfig);
+  });
+
+  await playListPromise;
+  return Array.from(
+    playlistDiv
+      .querySelectorAll("div > ol > li")
+      .values()
+      .map((x) => extractMiniPlaylistVideo(x)),
+  );
 }
