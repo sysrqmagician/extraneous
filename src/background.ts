@@ -22,7 +22,7 @@ export type BackgroundResponse =
   | { type: "deArrow"; title: string | null; thumbnailUri: string | null };
 
 /**
- * Record for storing video watch state
+ * Record for storing module state
  */
 type VideoRecord = {
   isWatched: boolean;
