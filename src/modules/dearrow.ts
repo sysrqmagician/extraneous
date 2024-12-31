@@ -3,11 +3,11 @@ import browser from "webextension-polyfill";
 import { BackgroundRequest, BackgroundResponse } from "../background.ts";
 import { VideoInfo } from "../extractor.ts";
 
-type DeArrowData = {
-  thumbnailUrl: string;
-  title: string;
-};
-
+/**
+ * Applies DeArrow alternatives to a video page, replacing clickbait titles
+ * with community-submitted alternatives
+ * @param currentVideo The video information for the current page
+ */
 export function deArrowVideoPage(currentVideo: VideoInfo) {
   browser.runtime
     .sendMessage({
@@ -30,6 +30,11 @@ export function deArrowVideoPage(currentVideo: VideoInfo) {
     });
 }
 
+/**
+ * Applies DeArrow alternatives to videos in the feed, replacing clickbait
+ * titles and thumbnails with community-submitted alternatives
+ * @param feed_videos Array of video information from the feed
+ */
 export function deArrowFeedPage(feed_videos: Array<VideoInfo>) {
   for (const video of feed_videos) {
     browser.runtime

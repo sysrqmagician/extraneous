@@ -1,5 +1,11 @@
 import { VideoInfo } from "../extractor.ts";
 
+/**
+ * Filters out unwanted videos from the feed based on criteria
+ * @param feed_videos Array of video information from the feed
+ * @param minDurationString Minimum duration string as taken by {@link parseDurationSeconds}
+ * @param badTitleRegexString Regex pattern to match titles that should be hidden
+ */
 export function hideSlopFeedPage(
   feed_videos: Array<VideoInfo>,
   minDurationString: string,
@@ -27,6 +33,10 @@ export function hideSlopFeedPage(
   console.log(`Removed ${removedCount} videos matching criteria.`);
 }
 
+/**
+ * Hides a div element by setting display to none
+ * @param div The div element to hide
+ */
 function hideDiv(div: HTMLDivElement) {
   div.style.display = "none";
 }

@@ -3,9 +3,15 @@ import browser from "webextension-polyfill";
 import { BackgroundRequest, BackgroundResponse } from "../background.ts";
 import { VideoInfo } from "../extractor.ts";
 
+/** Button text for watched videos */
 const LABEL_WATCHED: string = "Watched";
+/** Button text for unwatched videos */
 const LABEL_UNWATCHED: string = "Unwatched";
 
+/**
+ * Adds watched/unwatched button functionality to a video page
+ * @param currentVideo The video information for the current page
+ */
 export function watchedVideoPage(currentVideo: VideoInfo) {
   const watchedButton: HTMLButtonElement = document.createElement("button");
   watchedButton.style.display = "inline-block";
@@ -13,6 +19,7 @@ export function watchedVideoPage(currentVideo: VideoInfo) {
     ?.querySelector("h1") // get the title
     ?.appendChild(watchedButton);
 
+  // Mark video as watched when it ends
   document.querySelector("video")?.addEventListener("ended", () => {
     browser.runtime.sendMessage({
       type: "setWatched",
@@ -22,6 +29,7 @@ export function watchedVideoPage(currentVideo: VideoInfo) {
     watchedButton.textContent = LABEL_WATCHED;
   });
 
+  // Initialize button state based on watched status
   browser.runtime
     .sendMessage({
       type: "isWatched",
@@ -36,6 +44,7 @@ export function watchedVideoPage(currentVideo: VideoInfo) {
         ? LABEL_WATCHED
         : LABEL_UNWATCHED;
 
+      // Toggle watched status on button click
       watchedButton.addEventListener("click", function () {
         const newValue = !(watchedButton.textContent === LABEL_WATCHED);
         browser.runtime.sendMessage({
@@ -49,6 +58,10 @@ export function watchedVideoPage(currentVideo: VideoInfo) {
     });
 }
 
+/**
+ * Applies visual effects to watched videos in the feed
+ * @param feed_videos Array of video information from the feed
+ */
 export function watchedFeedPage(feed_videos: Array<VideoInfo>) {
   for (const video of feed_videos) {
     browser.runtime
