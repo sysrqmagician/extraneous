@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 - - -
 
-## v1.0.0 - 2025-01-02
+## v1.0.0 - 2024-12-31
 #### Bug Fixes
 - **(core)** log errors when extracting from miniplaylist and return successes - (c631143) - sysrqmagician
 - **(deArrow)** check if response title is present on video page - (104413d) - sysrqmagician
