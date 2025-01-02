@@ -2,14 +2,12 @@ tag_prefix = "v"
 pre_bump_hooks = [
     "just build",
     "deno lint",
-    "sed -i 's/\"version\": \"[0-9.]\\+\",$/\"version\": \"{{version}}\",/' manifest.json"
+    "sed -i 's/\"version\": \"[0-9.]\\+\",$/\"version\": \"{{version}}\",/' manifest.json",
 ]
-post_bump_hooks = [
-    "git push",
-]
+post_bump_hooks = ["git push --tags"]
 
 [changelog]
 path = "CHANGELOG.md"
 
 [commit_types]
-ci = { omit_from_changelog = true, changelog_title = "CI"  }
+ci = { omit_from_changelog = true, changelog_title = "CI" }
