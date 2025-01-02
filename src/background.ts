@@ -114,12 +114,12 @@ async function handleDeArrow(
     if (brandingResponse.status == 200 && brandingResponseJson) {
       try {
         thumbnailTime =
-          brandingResponseJson[request.videoId]["thumbnails"][0]["timestamp"];
+          brandingResponseJson[request.videoId].thumbnails[0].timestamp;
       } catch (_) {
         try {
           thumbnailTime =
-            brandingResponseJson[request.videoId]["randomTime"] *
-            brandingResponseJson[request.videoId]["videoDuration"];
+            brandingResponseJson[request.videoId].randomTime *
+            brandingResponseJson[request.videoId].videoDuration;
         } catch (_) {
           thumbnailTime = null;
         }
@@ -128,7 +128,7 @@ async function handleDeArrow(
       if (!thumbnailTime && thumbnailUri) {
         try {
           const original =
-            brandingResponseJson[request.videoId]["thumbnails"][0]["original"];
+            brandingResponseJson[request.videoId].thumbnails[0].original;
           if (original) {
             // Removing previously loaded thumbnail since original is specified in branding response
             thumbnailUri = null;
@@ -139,7 +139,7 @@ async function handleDeArrow(
       }
 
       try {
-        title = brandingResponseJson[request.videoId]["titles"][0]["title"];
+        title = brandingResponseJson[request.videoId].titles[0].title;
         try {
           browser.storage.session.set({
             [videoKey]: {

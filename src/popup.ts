@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     watchedEnabledCheckbox.addEventListener("change", function () {
       getConfig().then((config) => {
         config.watched.enabled = watchedEnabledCheckbox.checked;
-        browser.storage.local.set({ ["config"]: config });
+        browser.storage.local.set({ config });
       });
     });
 
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hideSlopEnabledCheckbox.addEventListener("change", function () {
       getConfig().then((config) => {
         config.hideSlop.enabled = hideSlopEnabledCheckbox.checked;
-        browser.storage.local.set({ ["config"]: config });
+        browser.storage.local.set({ config });
       });
     });
 
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key == "Enter") {
         getConfig().then((config) => {
           config.hideSlop.badTitleRegex = hideSlopBadTitleRegexInput.value;
-          browser.storage.local.set({ ["config"]: config });
+          browser.storage.local.set({ config });
         });
       }
     });
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key == "Enter") {
         getConfig().then((config) => {
           config.hideSlop.minDuration = hideSlopMinDurationInput.value;
-          browser.storage.local.set({ ["config"]: config });
+          browser.storage.local.set({ config });
         });
       }
     });
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     deArrowEnabledCheckbox.addEventListener("change", function () {
       getConfig().then((config) => {
         config.deArrow.enabled = deArrowEnabledCheckbox.checked;
-        browser.storage.local.set({ ["config"]: config });
+        browser.storage.local.set({ config });
       });
     });
   });
