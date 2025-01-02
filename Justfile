@@ -5,7 +5,7 @@ build:
     deno run -A build.ts
 
 # Create distribution ZIP
-package: build
+package: clean build
     zip -r extension.zip manifest.json popup/ dist/ assets/logo.svg
 
 # Clean built files
