@@ -20,9 +20,7 @@ export function hideSlopFeed(
   let removedCount = 0;
   for (const video of feed_videos) {
     const toRemove = (
-      pageType === PageType.MiniPlaylist
-        ? video.element
-        : video.element.parentElement
+      pageType === PageType.Feed ? video.element.parentElement : video.element
     ) as HTMLDivElement;
 
     if (badTitleRegex.test(video.title)) {
