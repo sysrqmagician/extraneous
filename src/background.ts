@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-unused-vars
 // @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
+import { getConfig } from "./config_popup.ts";
 
 /**
  * Types of requests that can be sent to the background script
@@ -33,7 +34,7 @@ type VideoRecord = {
  */
 type VideoCache = {
   deArrowTitle: string;
-  deArrowThumbnailTime: number;
+  deArrowThumbnailTime: number | null;
 };
 
 /**
@@ -117,6 +118,7 @@ async function requestThumbnail(
 async function handleDeArrow(
   request: Extract<BackgroundRequest, { type: "deArrow" }>,
 ): Promise<BackgroundResponse> {
+  const config = await getConfig();
   const videoKey = getVideoKey(request.videoId);
   const cache_records = await browser.storage.session.get(videoKey);
 
@@ -145,6 +147,7 @@ async function handleDeArrow(
     }
   }
 
+  // If title and time weren't cached, fetch them
   if (!title && !thumbnailTime) {
     const brandingResponse = await fetch(
       `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
@@ -186,21 +189,33 @@ async function handleDeArrow(
       }
 
       if (videoBranding.titles.length > 0) {
-        // Remove DeArrow auto-formatting ignore indicator '>'
-        title = videoBranding.titles[0].title.replace(/>[^\s]/g, (match) =>
-          match.substring(1),
-        );
+        const brandingTitle = videoBranding.titles[0];
 
-        try {
-          browser.storage.session.set({
-            [videoKey]: {
-              deArrowTitle: title,
-            } as VideoCache,
-          });
-        } catch (e) {
-          // Unable to store, likely due to exceeded quota.
-          // TODO: Remove previous cache entries
-          console.log(`Unable to cache title for ${videoKey}: ${e}`);
+        // Make sure title is trusted per documentation or user doesn't care
+        if (
+          !config.deArrow.trustedOnly ||
+          brandingTitle.locked ||
+          brandingTitle.votes >= 0
+        ) {
+          // Remove DeArrow auto-formatting ignore indicator '>'
+          title = videoBranding.titles[0].title.replace(/>[^\s]/g, (match) =>
+            match.substring(1),
+          );
+        }
+
+        if (title) {
+          try {
+            browser.storage.session.set({
+              [videoKey]: {
+                deArrowTitle: title,
+                deArrowThumbnailTime: thumbnailTime,
+              } as VideoCache,
+            });
+          } catch (e) {
+            // Unable to store, likely due to exceeded quota.
+            // TODO: Remove previous cache entries
+            console.log(`Unable to cache title for ${videoKey}: ${e}`);
+          }
         }
       }
     } else {

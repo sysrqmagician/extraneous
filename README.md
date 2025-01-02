@@ -8,12 +8,12 @@ A WebExtension for Invidious, written in TypeScript using Deno.
 - [x] DeArrow
   - [x] Playlist, Watched Videos
   - [x] Caching
-  - [ ] Compliance with implementation details from DeArrow documentation
+  - [x] Compliance with implementation details from DeArrow documentation
     - [x] Thumbnail returned by branding
     - [x] Thumbnail fallback
     - [x] Title fallback
     - [x] Title auto-formatting / Removal of auto-formatting characters
-    - [ ] Only show trusted titles
+    - [x] Only show trusted titles
   - [x] Proper fallbacks
 - [x] Hide videos under certain duration or with title matching regex
 - [ ] Create collections of channels

@@ -13,6 +13,7 @@ export type ExtensionConfig = {
   };
   deArrow: {
     enabled: boolean;
+    trustedOnly: boolean;
   };
 };
 
@@ -52,6 +53,7 @@ const default_config = {
   },
   deArrow: {
     enabled: true,
+    trustedOnly: true,
   },
 } as ExtensionConfig;
 
@@ -112,6 +114,17 @@ document.addEventListener("DOMContentLoaded", () => {
     deArrowEnabledCheckbox.addEventListener("change", function () {
       getConfig().then((config) => {
         config.deArrow.enabled = deArrowEnabledCheckbox.checked;
+        browser.storage.local.set({ config });
+      });
+    });
+
+    const deArrowTrustedOnlyCheckbox = document.getElementById(
+      "deArrow_trustedOnly",
+    ) as HTMLInputElement;
+    deArrowTrustedOnlyCheckbox.checked = config.deArrow.trustedOnly;
+    deArrowTrustedOnlyCheckbox.addEventListener("change", function () {
+      getConfig().then((config) => {
+        config.deArrow.trustedOnly = deArrowTrustedOnlyCheckbox.checked;
         browser.storage.local.set({ config });
       });
     });
