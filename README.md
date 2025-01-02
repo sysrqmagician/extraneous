@@ -4,7 +4,7 @@
 A WebExtension for Invidious, written in TypeScript using Deno.
 
 ## Features
-- [x] Keep track of watched videos and higlight them.
+- [x] Keep track of watched videos and higlight them
 - [x] DeArrow
   - [x] Playlist, Watch Page, Feeds
   - [x] Caching
