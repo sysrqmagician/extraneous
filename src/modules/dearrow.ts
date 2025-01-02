@@ -33,6 +33,11 @@ export function deArrowVideoPage(currentVideo: VideoInfo) {
           titleElement.setAttribute("title", currentVideo.title); // Set tooltip to original title
         }
       }
+      const vjsPoster: HTMLDivElement | null =
+        document.querySelector("div.vjs-poster");
+      if (vjsPoster && backgroundResponse.thumbnailUri) {
+        vjsPoster.style.backgroundImage = `url(${backgroundResponse.thumbnailUri})`;
+      }
     });
 }
 
