@@ -2,6 +2,7 @@ tag_prefix = "v"
 pre_bump_hooks = [
     "just build",
     "deno lint",
+    "sed -i 's/\"version\": \"[0-9.]\\+\",$/\"version\": \"{{version}}\",/' manifest.json"
 ]
 post_bump_hooks = [
     "git push",
