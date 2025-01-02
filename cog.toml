@@ -1,0 +1,14 @@
+tag_prefix = "v"
+pre_bump_hooks = [
+    "just build",
+    "deno lint",
+]
+post_bump_hooks = [
+    "git push",
+]
+
+[changelog]
+path = "CHANGELOG.md"
+
+[commit_types]
+ci = { omit_from_changelog = true }
