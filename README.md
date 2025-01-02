@@ -12,7 +12,8 @@ A WebExtension for Invidious, written in TypeScript using Deno.
     - [x] Thumbnail returned by branding
     - [x] Thumbnail fallback
     - [x] Title fallback
-    - [ ] Title auto-formatting / Removal of auto-formatting characters
+    - [x] Title auto-formatting / Removal of auto-formatting characters
+    - [ ] Only show trusted titles
   - [x] Proper fallbacks
 - [x] Hide videos under certain duration or with title matching regex
 - [ ] Create collections of channels
