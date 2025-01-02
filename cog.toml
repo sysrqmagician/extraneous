@@ -4,7 +4,7 @@ pre_bump_hooks = [
     "deno lint",
     "sed -i 's/\"version\": \"[0-9.]\\+\",$/\"version\": \"{{version}}\",/' manifest.json",
 ]
-post_bump_hooks = ["git push --tags"]
+post_bump_hooks = ["git push origin {{version_tag}}"]
 
 [changelog]
 path = "CHANGELOG.md"
