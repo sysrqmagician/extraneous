@@ -1,5 +1,6 @@
 // @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
+import * as collections from "@std/collections";
 
 export type ExtensionConfig = {
   watched: {
@@ -15,15 +16,29 @@ export type ExtensionConfig = {
   };
 };
 
+/**
+ * Retrieves the extension configuration from browser storage.
+ * If no configuration exists, creates a new one using default values.
+ * For existing configurations, merges them with default values to ensure
+ * all expected properties exist, preserving user-set values where possible.
+ *
+ * @returns A Promise that resolves to the complete ExtensionConfig object
+ */
 export async function getConfig(): Promise<ExtensionConfig> {
   const records = await browser.storage.local.get("config");
-  let config = records["config"] as ExtensionConfig;
+  let config = records.config as Partial<ExtensionConfig>;
+
   if (!config) {
-    await browser.storage.local.set({ ["config"]: default_config });
+    await browser.storage.local.set({ config: default_config });
     config = default_config;
+  } else {
+    config = collections.deepMerge(default_config, config, {
+      arrays: "replace",
+    });
+    await browser.storage.local.set({ config });
   }
 
-  return config;
+  return config as ExtensionConfig;
 }
 
 const default_config = {
