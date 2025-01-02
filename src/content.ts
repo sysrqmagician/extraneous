@@ -4,7 +4,7 @@ import {
   extractFeedFromPage,
   VideoInfo,
 } from "./extractor.ts";
-import { ExtensionConfig, getConfig } from "./popup.ts";
+import { ExtensionConfig, getConfig } from "./config_popup.ts";
 import { watchedFeed, watchedVideoPage } from "./modules/watched.ts";
 import { hideSlopFeed } from "./modules/hideslop.ts";
 import { deArrowFeed, deArrowVideoPage } from "./modules/dearrow.ts";

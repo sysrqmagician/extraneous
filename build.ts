@@ -7,7 +7,7 @@ async function build() {
       plugins: [...denoPlugins()],
       entryPoints: [
         "./src/content.ts",
-        "./src/popup.ts",
+        "./src/config_popup.ts",
         "./src/background.ts",
       ],
       outdir: "./dist",
