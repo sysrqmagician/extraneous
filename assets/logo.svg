@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="102.36595mm"
+   height="102.36597mm"
+   viewBox="0 0 46.795864 33.087989"
    version="1.1"
    id="svg1"
    inkscape:export-filename="logo.png"
@@ -26,30 +26,40 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.3113356"
-     inkscape:cx="205.13437"
-     inkscape:cy="488.43333"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="-183.84776"
+     inkscape:cy="1209.1526"
      inkscape:window-width="2558"
      inkscape:window-height="1408"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="46.795864"
+       height="33.08799"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
   <defs
      id="defs1" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-14.105563,-29.761611)">
     <circle
        style="fill:#f2f2f2;stroke-width:0.264583"
        id="path1"
-       cx="37.503498"
-       cy="33.273834"
+       cx="37.50489"
+       cy="46.305183"
        r="23.397934" />
     <g
        id="g7"
-       transform="translate(-46.473808,-9.0891135)">
+       transform="translate(-46.472383,3.9422366)">
       <text
          xml:space="preserve"
          style="font-size:35.3898px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#4d4d4d;fill-opacity:1;stroke-width:2.94915"
@@ -70,7 +80,6 @@
     <path
        id="rect7"
        style="fill:#0496c4;fill-opacity:1;stroke-width:0.241208"
-       d="M 7.3848172 51.801772 L -22.815243 51.801746 C -22.896166 51.801746 -22.969355 51.834464 -23.022334 51.887123 L -22.520776 52.629514 L 7.8511372 52.629728 C 7.8801856 52.629728 7.9067269 52.621249 7.9331789 52.613442 L 7.3848172 51.801772 z "
-       transform="matrix(0.56140615,-0.82754041,0.82911131,0.55908357,0,0)" />
+       d="M 47.096742,35.881635 30.142221,60.87339 c -0.04543,0.06696 -0.05939,0.145827 -0.04547,0.219111 l 0.897103,-10e-7 17.051153,-25.133866 c 0.01631,-0.02404 0.02416,-0.05076 0.03255,-0.077 z" />
   </g>
 </svg>

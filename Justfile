@@ -6,7 +6,7 @@ build:
 
 # Create distribution ZIP
 package: build
-    zip -r extension.zip manifest.json popup/ dist/
+    zip -r extension.zip manifest.json popup/ dist/ assets/logo.svg
 
 # Clean built files
 clean:
