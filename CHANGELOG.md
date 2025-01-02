@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.1.1 - 2025-01-02
+#### Documentation
+- correct date in changelog - (4c01b62) - sysrqmagician
+- add v1.0.0 changelog - (8841765) - sysrqmagician
+#### Miscellaneous Chores
+- use logo in extension - (aea6811) - sysrqmagician
+
+- - -
+
 ## v1.1.0 - 2025-01-02
 #### Bug Fixes
 - **(hideSlop)** hiding works properly on next watch feed again - (9d8755c) - sysrqmagician
