@@ -11,4 +11,4 @@ post_bump_hooks = [
 path = "CHANGELOG.md"
 
 [commit_types]
-ci = { omit_from_changelog = true }
+ci = { omit_from_changelog = true, changelog_title = "CI"  }
