@@ -2,6 +2,7 @@
 import browser from "webextension-polyfill";
 import { BackgroundRequest, BackgroundResponse } from "../background.ts";
 import { VideoInfo } from "../extractor.ts";
+import { parseDurationSeconds } from "./hideslop.ts";
 
 /**
  * Applies DeArrow alternatives to a video page, replacing clickbait titles
@@ -9,10 +10,15 @@ import { VideoInfo } from "../extractor.ts";
  * @param currentVideo The video information for the current page
  */
 export function deArrowVideoPage(currentVideo: VideoInfo) {
+  const videoDuration = currentVideo.duration
+    ? parseDurationSeconds(currentVideo.duration)
+    : null;
+
   browser.runtime
     .sendMessage({
       type: "deArrow",
       videoId: currentVideo.videoId,
+      videoDuration,
     } as BackgroundRequest)
     .then((response) => {
       const backgroundResponse = response as Extract<

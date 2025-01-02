@@ -9,7 +9,7 @@ export type BackgroundRequest =
   | { type: "echo" }
   | { type: "isWatched"; videoId: string }
   | { type: "setWatched"; videoId: string; value: boolean }
-  | { type: "deArrow"; videoId: string };
+  | { type: "deArrow"; videoId: string; videoDuration: number | null };
 
 /**
  * Types of responses that can be returned from the background script
@@ -34,6 +34,38 @@ type VideoRecord = {
 type VideoCache = {
   deArrowTitle: string;
   deArrowThumbnailTime: number;
+};
+
+/**
+ * Response from DeArrow hashed ID branding API
+ */
+type BrandingData = {
+  [videoId: string]: BrandingVideo;
+};
+
+type BrandingTitle = {
+  title: string;
+  original: boolean;
+  votes: number;
+  locked: boolean;
+  UUID: string;
+  userID?: string;
+};
+
+type BrandingThumbnail = {
+  timestamp: number | null;
+  original: boolean;
+  votes: number;
+  locked: boolean;
+  UUID: string;
+  userID?: string;
+};
+
+type BrandingVideo = {
+  titles: BrandingTitle[];
+  thumbnails: BrandingThumbnail[];
+  randomTime: number;
+  videoDuration: number | null;
 };
 
 browser.runtime.onMessage.addListener(
@@ -88,8 +120,8 @@ async function handleDeArrow(
   const videoKey = getVideoKey(request.videoId);
   const cache_records = await browser.storage.session.get(videoKey);
 
-  let title = null;
-  let thumbnailTime = null;
+  let title: string | null = null;
+  let thumbnailTime: number | null = null;
   if (videoKey in cache_records) {
     const record = cache_records[videoKey] as VideoCache;
     title = record.deArrowTitle;
@@ -103,56 +135,73 @@ async function handleDeArrow(
   let cachedThumbnailTime = null;
   if (thumbnailBlob.size !== 0) {
     thumbnailUri = await blobToUri(thumbnailBlob);
-    cachedThumbnailTime = thumbnailResponse.headers.get("X-Timestamp");
+    const x_timestamp = thumbnailResponse.headers.get("X-Timestamp");
+    if (x_timestamp) {
+      try {
+        cachedThumbnailTime = parseInt(x_timestamp);
+      } catch {
+        // X-Timestamp was invalid, keep null
+      }
+    }
   }
 
   if (!title && !thumbnailTime) {
     const brandingResponse = await fetch(
       `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
     );
-    const brandingResponseJson = await brandingResponse.json();
-    if (brandingResponse.status == 200 && brandingResponseJson) {
-      try {
-        thumbnailTime =
-          brandingResponseJson[request.videoId].thumbnails[0].timestamp;
-      } catch (_) {
-        try {
-          thumbnailTime =
-            brandingResponseJson[request.videoId].randomTime *
-            brandingResponseJson[request.videoId].videoDuration;
-        } catch (_) {
-          thumbnailTime = null;
+    const brandingData = (await brandingResponse.json()) as BrandingData;
+
+    // If the request was successful and returned the video's data
+    if (
+      brandingResponse.status == 200 &&
+      brandingData &&
+      brandingData[request.videoId]
+    ) {
+      const videoBranding = brandingData[request.videoId];
+
+      // If a thumbnail is specified, use its timestamp
+      // This could be null in the case of original = true
+      // If there is no thumbnail, derive timestamp from server-provided random value
+      if (videoBranding.thumbnails && videoBranding.thumbnails.length > 0) {
+        thumbnailTime = videoBranding.thumbnails[0].timestamp;
+      } else {
+        // The server usually doesn't know the duration,
+        // so we supplement the response with locally obtained information, if available.
+        const videoDuration =
+          videoBranding.videoDuration ?? request.videoDuration;
+
+        if (videoDuration !== null) {
+          thumbnailTime = videoBranding.randomTime * videoDuration;
         }
       }
 
-      if (!thumbnailTime && thumbnailUri) {
-        try {
-          const original =
-            brandingResponseJson[request.videoId].thumbnails[0].original;
-          if (original) {
-            // Removing previously loaded thumbnail since original is specified in branding response
-            thumbnailUri = null;
-          }
-        } catch (_) {
-          // Keep thumbnail; there was no branding thumbnail data
-        }
+      // If the branding response specifies to use the original, remove any previously loaded thumbnail
+      if (
+        !thumbnailTime &&
+        thumbnailUri &&
+        videoBranding.thumbnails.length > 0 &&
+        videoBranding.thumbnails[0].original
+      ) {
+        thumbnailUri = null;
       }
 
-      try {
-        title = brandingResponseJson[request.videoId].titles[0].title;
+      if (videoBranding.titles.length > 0) {
+        // Remove DeArrow auto-formatting ignore indicator '>'
+        title = videoBranding.titles[0].title.replace(/>[^\s]/g, (match) =>
+          match.substring(1),
+        );
+
         try {
           browser.storage.session.set({
             [videoKey]: {
               deArrowTitle: title,
             } as VideoCache,
           });
-        } catch (_) {
+        } catch (e) {
           // Unable to store, likely due to exceeded quota.
           // TODO: Remove previous cache entries
+          console.log(`Unable to cache title for ${videoKey}: ${e}`);
         }
-      } catch (_) {
-        // No title returned
-        title = null;
       }
     } else {
       // Fall back to X-Title returned from thumbnail server in the event of a main server outage.
@@ -175,11 +224,9 @@ async function handleDeArrow(
       thumbnailTime &&
       cachedThumbnailTime !== thumbnailTime)
   ) {
-    thumbnailResponse = await requestThumbnail(
-      request.videoId,
-      thumbnailTime as number,
-    );
+    thumbnailResponse = await requestThumbnail(request.videoId, thumbnailTime);
     thumbnailBlob = await thumbnailResponse.blob();
+
     if (thumbnailBlob.size !== 0) {
       thumbnailUri = await blobToUri(thumbnailBlob);
     }
