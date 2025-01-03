@@ -3,6 +3,7 @@
 
 A WebExtension for Invidious, written in TypeScript using Deno.
 
+[![Get the Add-On for Firefox](https://raw.githubusercontent.com/sysrqmagician/extraneous/refs/heads/main/assets/get-the-addon-small.webp)](https://addons.mozilla.org/en-US/firefox/addon/extraneous/)
 ## Features
 - [x] Keep track of watched videos and higlight them
 - [x] DeArrow
@@ -23,9 +24,23 @@ A WebExtension for Invidious, written in TypeScript using Deno.
 
 
 ## Installing
-For now, you will have to install the extension manually. The submission to AMO is awaiting review.
+### Firefox via AMO (recommended)
+You can install extraneous for Firefox like any other extension by clicking [here](https://addons.mozilla.org/en-US/firefox/addon/extraneous/).
 
+### Manually
+#### Firefox
 1. Download [the latest version of the extension](https://github.com/sysrqmagician/extraneous/releases/latest/download/extension.zip)
 2. In Firefox Developer Edition (recommended) or Firefox Nightly, navigate to ``about:config`` and set ``xpinstall.signatures.required`` to ``false``
-3. Navigate to ``about:addons`` and open the cogwheel dropdown menu. Click ``Install Add-On From File...`` and select the zip file in the dialog
-4. Press confirm on the warning that pops up
+3. Navigate to ``about:addons`` and open the cogwheel dropdown menu.
+4. Click ``Install Add-On From File...`` and select the zip file in the dialog
+5. Press confirm on the warning that pops up
+
+#### Chromium-based
+There is no official listing for extraneous in the Chrome Web Store. Support offered for Chromium is limited, but the extension should work nonetheless.
+
+1. Download [the latest version of the extension](https://github.com/sysrqmagician/extraneous/releases/latest/download/extension.zip).
+2. Extract the ``extension.zip`` into a separate folder.
+3. Navigate to ``chrome://extensions``.
+4. Enable Developer mode by clicking the toggle in the top-right corner.
+5. Click ``Load unpacked`` and select the directory you extracted the extension into.
+6. A "safety check" will pop up. Choose to keep the extension.
