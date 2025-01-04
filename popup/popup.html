@@ -4,44 +4,56 @@
         <meta charset="UTF-8" />
         <style>
             body {
-                width: 200px;
-                padding: 10px;
+                background-color: #f9f9fb;
+                color: #15141a;
+                padding: 5px;
+                font-family: sans-serif;
             }
-            button {
-                width: 100%;
-                padding: 8px;
-                margin: 5px 0;
+            a {
+                color: #0090ed;
+            }
+            span {
+                white-space: nowrap;
+            }
+            .flash-green {
+                outline: 2px solid #2ac3a2;
             }
         </style>
     </head>
     <body>
-        <h3>Settings</h3>
+        <h3>Extraneous Settings</h3>
         <h4>Highlight Watched Videos</h4>
-        <input id="watched_enabled" type="checkbox"></input>
-        <label for="watched_enabled">Enabled</label>
-        <br/>
-        <input id="watched_cssFilter" type="text" title="The CSS filter to apply to watched videos."></input>
-        <label for="watched_cssFilter">CSS Filter <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter">[?]</a></label>
+        <span>
+            <input id="watched_enabled" type="checkbox"></input>
+            <label for="watched_enabled">Enabled</label>
+            <br/>
+            <input id="watched_cssFilter" type="text" title="The CSS filter to apply to watched videos."></input>
+            <label for="watched_cssFilter">CSS Filter <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter">[?]</a></label>
+        </span>
 
         <h4>Hide Videos</h4>
-        <input id="hideSlop_enabled" type="checkbox"></input>
-        <label for="hideSlop_enabled">Enabled</label>
-        <br/>
-        <input id="hideSlop_minDuration" type="text" title="[HH:MM:SS] Shorter videos will be removed"></input>
-        <label for="hideSlop_minDuration">Minimum Duration</label>
-        <br/>
-        <input id="hideSlop_badTitleRegex" type="text" title="Videos with matching titles will be removed"></input>
-        <label for="hideSlop_badTitleRegex">Title Regex</label>
+        <span>
+            <input id="hideSlop_enabled" type="checkbox"></input>
+            <label for="hideSlop_enabled">Enabled</label>
+            <br/>
+            <input id="hideSlop_minDuration" type="text" title="[HH:MM:SS] Shorter videos will be removed"></input>
+            <label for="hideSlop_minDuration">Minimum Duration</label>
+            <br/>
+            <input id="hideSlop_badTitleRegex" type="text" title="Videos with matching titles will be removed"></input>
+            <label for="hideSlop_badTitleRegex">Title Regex</label>
+        </span>
 
         <h4>DeArrow</h4>
-        <input id="deArrow_enabled" type="checkbox"></input>
-        <label for="deArrow_enabled">Enabled</label>
-        <br/>
-        <input id="deArrow_trustedOnly" type="checkbox"></input>
-        <label for="deArrow_trustedOnly">Only show trusted titles</label>
-        <br/>
-        <input id="deArrow_hideInitialThumbnail" type="checkbox"></input>
-        <label for="deArrow_hideInitialThumbnail">Hide thumbnails until their replacements are fetched</label>
+        <span>
+            <input id="deArrow_enabled" type="checkbox"></input>
+            <label for="deArrow_enabled">Enabled</label>
+            <br/>
+            <input id="deArrow_trustedOnly" type="checkbox"></input>
+            <label for="deArrow_trustedOnly">Only show trusted titles</label>
+            <br/>
+            <input id="deArrow_hideInitialThumbnail" type="checkbox"></input>
+            <label for="deArrow_hideInitialThumbnail">Hide thumbnails until their replacements are fetched</label>
+        </span>
 
         <script src="../dist/config_popup.js"></script>
     </body>

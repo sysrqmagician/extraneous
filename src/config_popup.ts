@@ -61,6 +61,13 @@ const default_config = {
   },
 } as ExtensionConfig;
 
+function flashGreen(element: HTMLInputElement) {
+  element.classList.add("flash-green");
+  globalThis.setTimeout(() => {
+    element.classList.remove("flash-green");
+  }, 200);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   getConfig().then((config) => {
     const watchedEnabledCheckbox = document.getElementById(
@@ -74,15 +81,16 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    const watchedCssFilterCheckbox = document.getElementById(
+    const watchedCssFilterInput = document.getElementById(
       "watched_cssFilter",
     ) as HTMLInputElement;
-    watchedCssFilterCheckbox.value = config.watched.cssFilter;
-    watchedCssFilterCheckbox.addEventListener("keydown", function (e) {
+    watchedCssFilterInput.value = config.watched.cssFilter;
+    watchedCssFilterInput.addEventListener("keydown", function (e) {
       if (e.key == "Enter") {
         getConfig().then((config) => {
-          config.watched.cssFilter = watchedCssFilterCheckbox.value;
+          config.watched.cssFilter = watchedCssFilterInput.value;
           browser.storage.local.set({ config });
+          flashGreen(watchedCssFilterInput);
         });
       }
     });
@@ -95,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getConfig().then((config) => {
         config.hideSlop.enabled = hideSlopEnabledCheckbox.checked;
         browser.storage.local.set({ config });
+        flashGreen(hideSlopEnabledCheckbox);
       });
     });
 
@@ -107,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getConfig().then((config) => {
           config.hideSlop.badTitleRegex = hideSlopBadTitleRegexInput.value;
           browser.storage.local.set({ config });
+          flashGreen(hideSlopBadTitleRegexInput);
         });
       }
     });
@@ -120,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getConfig().then((config) => {
           config.hideSlop.minDuration = hideSlopMinDurationInput.value;
           browser.storage.local.set({ config });
+          flashGreen(hideSlopMinDurationInput);
         });
       }
     });
@@ -132,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getConfig().then((config) => {
         config.deArrow.enabled = deArrowEnabledCheckbox.checked;
         browser.storage.local.set({ config });
+        flashGreen(deArrowEnabledCheckbox);
       });
     });
 
@@ -143,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getConfig().then((config) => {
         config.deArrow.trustedOnly = deArrowTrustedOnlyCheckbox.checked;
         browser.storage.local.set({ config });
+        flashGreen(deArrowTrustedOnlyCheckbox);
       });
     });
 
@@ -155,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         config.deArrow.hideInitialThumbnail =
           deArrowHideInitialCheckbox.checked;
         browser.storage.local.set({ config });
+        flashGreen(deArrowHideInitialCheckbox);
       });
     });
   });
