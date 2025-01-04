@@ -5,6 +5,7 @@ import * as collections from "@std/collections";
 export type ExtensionConfig = {
   watched: {
     enabled: boolean;
+    cssFilter: string;
   };
   hideSlop: {
     enabled: boolean;
@@ -46,6 +47,7 @@ export async function getConfig(): Promise<ExtensionConfig> {
 const default_config = {
   watched: {
     enabled: true,
+    cssFilter: "blur(1px) sepia(1)",
   },
   hideSlop: {
     enabled: true,
@@ -70,6 +72,19 @@ document.addEventListener("DOMContentLoaded", () => {
         config.watched.enabled = watchedEnabledCheckbox.checked;
         browser.storage.local.set({ config });
       });
+    });
+
+    const watchedCssFilterCheckbox = document.getElementById(
+      "watched_cssFilter",
+    ) as HTMLInputElement;
+    watchedCssFilterCheckbox.value = config.watched.cssFilter;
+    watchedCssFilterCheckbox.addEventListener("keydown", function (e) {
+      if (e.key == "Enter") {
+        getConfig().then((config) => {
+          config.watched.cssFilter = watchedCssFilterCheckbox.value;
+          browser.storage.local.set({ config });
+        });
+      }
     });
 
     const hideSlopEnabledCheckbox = document.getElementById(

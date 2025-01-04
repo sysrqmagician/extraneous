@@ -63,7 +63,7 @@ function callFeedModules(
   feedVideos: Array<VideoInfo>,
   pageType: PageType,
 ) {
-  if (config.watched.enabled) watchedFeed(feedVideos);
+  if (config.watched.enabled) watchedFeed(feedVideos, config);
   if (config.hideSlop.enabled) {
     hideSlopFeed(
       feedVideos,

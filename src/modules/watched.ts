@@ -2,6 +2,7 @@
 import browser from "webextension-polyfill";
 import { BackgroundRequest, BackgroundResponse } from "../background.ts";
 import { VideoInfo } from "../extractor.ts";
+import { ExtensionConfig } from "../config_popup.ts";
 
 /** Button text for watched videos */
 const LABEL_WATCHED: string = "Watched";
@@ -61,7 +62,10 @@ export function watchedVideoPage(currentVideo: VideoInfo) {
  * Applies visual effects to watched videos in the feed
  * @param feed_videos Array of video information from the feed
  */
-export function watchedFeed(feed_videos: Array<VideoInfo>) {
+export function watchedFeed(
+  feed_videos: Array<VideoInfo>,
+  config: ExtensionConfig,
+) {
   for (const video of feed_videos) {
     browser.runtime
       .sendMessage({
@@ -74,7 +78,8 @@ export function watchedFeed(feed_videos: Array<VideoInfo>) {
           { type: "isWatched" }
         >;
         if (backgroundResponse.value) {
-          (video.element as HTMLDivElement).style.filter = "blur(1px) sepia(1)";
+          (video.element as HTMLDivElement).style.filter =
+            config.watched.cssFilter;
         }
       });
   }
