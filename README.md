@@ -3,14 +3,9 @@
 
 A WebExtension for Invidious, written in TypeScript using Deno.
 
-<<<<<<< HEAD
 [![Get the Add-On for Firefox](https://raw.githubusercontent.com/sysrqmagician/extraneous/refs/heads/main/assets/get-the-addon-small.webp)](https://addons.mozilla.org/en-US/firefox/addon/extraneous/)
-## Features
-||||||| parent of f48dc64 (docs: rename roadmap header)
-## Features
-=======
+
 ## Development Roadmap
->>>>>>> f48dc64 (docs: rename roadmap header)
 - [x] Keep track of watched videos and higlight them
 - [x] DeArrow
   - [x] Playlist, Watch Page, Feeds

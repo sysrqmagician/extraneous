@@ -14,6 +14,7 @@ export type ExtensionConfig = {
   deArrow: {
     enabled: boolean;
     trustedOnly: boolean;
+    hideInitialThumbnail: boolean;
   };
 };
 
@@ -54,6 +55,7 @@ const default_config = {
   deArrow: {
     enabled: true,
     trustedOnly: true,
+    hideInitialThumbnail: false,
   },
 } as ExtensionConfig;
 
@@ -125,6 +127,17 @@ document.addEventListener("DOMContentLoaded", () => {
     deArrowTrustedOnlyCheckbox.addEventListener("change", function () {
       getConfig().then((config) => {
         config.deArrow.trustedOnly = deArrowTrustedOnlyCheckbox.checked;
+        browser.storage.local.set({ config });
+      });
+    });
+
+    const deArrowHideInitialCheckbox = document.getElementById(
+      "deArrow_hideInitialThumbnail",
+    ) as HTMLInputElement;
+    deArrowHideInitialCheckbox.checked = config.deArrow.hideInitialThumbnail;
+    deArrowHideInitialCheckbox.addEventListener("change", function () {
+      getConfig().then((config) => {
+        config.deArrow.hideInitialThumbnail = deArrowHideInitialCheckbox.checked;
         browser.storage.local.set({ config });
       });
     });

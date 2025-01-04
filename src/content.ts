@@ -37,7 +37,7 @@ async function injectScript() {
   if (pageType == PageType.WatchVideo) {
     const currentVideo = extractCurrentVideo();
     if (config.watched.enabled) watchedVideoPage(currentVideo);
-    if (config.deArrow.enabled) deArrowVideoPage(currentVideo);
+    if (config.deArrow.enabled) deArrowVideoPage(currentVideo, config);
   }
 
   if (pageType == PageType.Feed || pageType == PageType.WatchVideo) {
@@ -64,14 +64,15 @@ function callFeedModules(
   pageType: PageType,
 ) {
   if (config.watched.enabled) watchedFeed(feedVideos);
-  if (config.hideSlop.enabled)
+  if (config.hideSlop.enabled) {
     hideSlopFeed(
       feedVideos,
       config.hideSlop.minDuration,
       config.hideSlop.badTitleRegex,
       pageType,
     );
-  if (config.deArrow.enabled) deArrowFeed(feedVideos);
+  }
+  if (config.deArrow.enabled) deArrowFeed(feedVideos, config);
 }
 
 if (document.readyState === "loading") {
