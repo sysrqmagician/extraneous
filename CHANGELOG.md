@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.2.0 - 2025-01-04
+#### Documentation
+- rename roadmap header - (dfe3d9b) - sysrqmagician
+- extraneous is now available via AMO, updated install instructions and added manual install for chromium - (31acf0b) - sysrqmagician
+- Upload "Get The Add-On" button from AMO - (b161795) - sysrqmagician
+- roadmap consistency - (3957885) - sysrqmagician
+- roadmap wording - (779f13c) - sysrqmagician
+- new install instructions in README - (ebef306) - sysrqmagician
+#### Features
+- **(deArrow)** option to hide thumbnails until dearrow data is fetched, closes #8 - (2f47f08) - sysrqmagician
+
+- - -
+
 ## v1.1.1 - 2025-01-02
 #### Documentation
 - correct date in changelog - (4c01b62) - sysrqmagician
