@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.3.0 - 2025-01-04
+#### Features
+- **(core)** style popup and give user feedback when saving input, closes #2 - (22d24b8) - sysrqmagician
+- **(watched)** ability to specify watched video CSS filter, closes #7 - (1ca35bf) - sysrqmagician
+#### Style
+- run formatter over src/ - (be6b25c) - sysrqmagician
+
+- - -
+
 ## v1.2.0 - 2025-01-04
 #### Documentation
 - rename roadmap header - (dfe3d9b) - sysrqmagician
