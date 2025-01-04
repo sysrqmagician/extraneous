@@ -96,7 +96,10 @@ export function deArrowFeed(
         >;
 
         if (thumbnailElement) {
-          thumbnailElement.setAttribute("src", backgroundResponse.thumbnailUri ?? previousThumbnailUrl);
+          thumbnailElement.setAttribute(
+            "src",
+            backgroundResponse.thumbnailUri ?? previousThumbnailUrl,
+          );
         }
 
         const titleElement = video.element.querySelector(

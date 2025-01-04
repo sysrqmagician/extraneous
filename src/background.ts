@@ -107,7 +107,9 @@ async function requestThumbnail(
   time: number | null,
 ): Promise<Response> {
   return await fetch(
-    `https://dearrow-thumb.ajay.app/api/v1/getThumbnail?videoID=${videoId}${time !== null ? `&time=${time}` : ""}`,
+    `https://dearrow-thumb.ajay.app/api/v1/getThumbnail?videoID=${videoId}${
+      time !== null ? `&time=${time}` : ""
+    }`,
   );
 }
 
@@ -150,7 +152,9 @@ async function handleDeArrow(
   // If title and time weren't cached, fetch them
   if (!title && !thumbnailTime) {
     const brandingResponse = await fetch(
-      `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(request.videoId)}`,
+      `https://sponsor.ajay.app/api/branding/${await deArrowSha256Prefix(
+        request.videoId,
+      )}`,
     );
     const brandingData = (await brandingResponse.json()) as BrandingData;
 
@@ -170,8 +174,8 @@ async function handleDeArrow(
       } else {
         // The server usually doesn't know the duration,
         // so we supplement the response with locally obtained information, if available.
-        const videoDuration =
-          videoBranding.videoDuration ?? request.videoDuration;
+        const videoDuration = videoBranding.videoDuration ??
+          request.videoDuration;
 
         if (videoDuration !== null) {
           thumbnailTime = videoBranding.randomTime * videoDuration;
@@ -198,8 +202,9 @@ async function handleDeArrow(
           brandingTitle.votes >= 0
         ) {
           // Remove DeArrow auto-formatting ignore indicator '>'
-          title = videoBranding.titles[0].title.replace(/>[^\s]/g, (match) =>
-            match.substring(1),
+          title = videoBranding.titles[0].title.replace(
+            />[^\s]/g,
+            (match) => match.substring(1),
           );
         }
 

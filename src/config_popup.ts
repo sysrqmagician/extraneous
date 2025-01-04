@@ -137,7 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
     deArrowHideInitialCheckbox.checked = config.deArrow.hideInitialThumbnail;
     deArrowHideInitialCheckbox.addEventListener("change", function () {
       getConfig().then((config) => {
-        config.deArrow.hideInitialThumbnail = deArrowHideInitialCheckbox.checked;
+        config.deArrow.hideInitialThumbnail =
+          deArrowHideInitialCheckbox.checked;
         browser.storage.local.set({ config });
       });
     });

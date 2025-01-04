@@ -45,11 +45,13 @@ function extractBasic(video_div: HTMLDivElement): VideoInfo {
   if (!title) throw new VideoExtractorError("Could not find video title");
   const channelLinkElement = video_div.querySelector("a[href^='/channel/']");
   const channelName = channelLinkElement?.textContent?.trim();
-  if (!channelName)
+  if (!channelName) {
     throw new VideoExtractorError("Could not find channel name");
+  }
   const channelLink = normalizeUrl(channelLinkElement?.getAttribute("href"));
-  if (!channelLink)
+  if (!channelLink) {
     throw new VideoExtractorError("Could not find channel link");
+  }
   const channelId = channelLink.pathname.split("/")[2];
   if (!channelId) throw new VideoExtractorError("Could not find channel ID");
 
@@ -94,17 +96,21 @@ export function extractCurrentVideo(): VideoInfo {
   if (!title) throw new VideoExtractorError("Could not find video title");
   const channelNameElement = document.querySelector("div.channel-profile");
   const channelName = channelNameElement?.textContent?.trim();
-  if (!channelName)
+  if (!channelName) {
     throw new VideoExtractorError("Could not find channel name");
+  }
   const channelLink = normalizeUrl(
     channelNameElement?.parentElement?.getAttribute("href"),
   );
-  if (!channelLink)
+  if (!channelLink) {
     throw new VideoExtractorError("Could not find channel link");
+  }
   const channelId = channelLink.pathname.split("/")[2];
   if (!channelId) throw new VideoExtractorError("Could not find channel ID");
   const videoLink = normalizeUrl(
-    `${document.location.pathname}?v=${new URLSearchParams(document.location.search).get("v")}`,
+    `${document.location.pathname}?v=${
+      new URLSearchParams(document.location.search).get("v")
+    }`,
   );
   if (!videoLink) throw new VideoExtractorError("Could not find video link");
   const videoId = videoLink.searchParams.get("v");
@@ -113,8 +119,9 @@ export function extractCurrentVideo(): VideoInfo {
   const player_container = document.getElementById(
     "player-container",
   ) as HTMLDivElement;
-  if (!player_container)
+  if (!player_container) {
     throw new VideoExtractorError("Could not find player container");
+  }
 
   return {
     title,
@@ -137,8 +144,9 @@ export function extractMiniPlaylistVideo(videoLi: Element): VideoInfo {
   const channelName = videoLi
     .querySelector("a > p:nth-child(3) > b")
     ?.textContent?.trim();
-  if (!channelName)
+  if (!channelName) {
     throw new VideoExtractorError("Could not find channel name");
+  }
 
   const videoLink = normalizeUrl(
     videoLi.querySelector("a")?.getAttribute("href"),
