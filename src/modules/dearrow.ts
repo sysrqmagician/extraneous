@@ -5,6 +5,8 @@ import { VideoInfo } from "../extractor.ts";
 import { parseDurationSeconds } from "./hideslop.ts";
 import { ExtensionConfig } from "../config_popup.ts";
 
+const TITLE_TEXT_DECORATION: string = "underline dotted 1px";
+
 /**
  * Applies DeArrow alternatives to a video page, replacing clickbait titles
  * with community-submitted alternatives
@@ -44,13 +46,20 @@ export function deArrowVideoPage(
         BackgroundResponse,
         { type: "deArrow" }
       >;
-      const titleElement = document.querySelector("div.h-box > h1");
+      const titleElement = document.querySelector(
+        "div.h-box > h1",
+      ) as HTMLHeadingElement;
 
       if (backgroundResponse.title && titleElement) {
         const textChild = titleElement.childNodes[0];
+
         if (textChild && textChild.nodeType == Node.TEXT_NODE) {
           textChild.textContent = backgroundResponse.title;
           titleElement.setAttribute("title", currentVideo.title); // Set tooltip to original title
+
+          if (config.deArrow.highlightReplacedTitles) {
+            titleElement.style.textDecoration = TITLE_TEXT_DECORATION;
+          }
         }
       }
 
@@ -104,10 +113,13 @@ export function deArrowFeed(
 
         const titleElement = video.element.querySelector(
           "div.video-card-row > a > p[dir='auto']",
-        );
+        ) as HTMLParagraphElement;
         if (backgroundResponse.title && titleElement) {
           titleElement.setAttribute("title", video.title); // Set tooltip to original title
           titleElement.textContent = backgroundResponse.title;
+          if (config.deArrow.highlightReplacedTitles) {
+            titleElement.style.textDecoration = TITLE_TEXT_DECORATION;
+          }
         }
       });
   }

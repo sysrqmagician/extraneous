@@ -16,6 +16,7 @@ export type ExtensionConfig = {
     enabled: boolean;
     trustedOnly: boolean;
     hideInitialThumbnail: boolean;
+    highlightReplacedTitles: boolean;
   };
 };
 
@@ -58,6 +59,7 @@ const default_config = {
     enabled: true,
     trustedOnly: true,
     hideInitialThumbnail: false,
+    highlightReplacedTitles: false,
   },
 } as ExtensionConfig;
 
@@ -171,5 +173,22 @@ document.addEventListener("DOMContentLoaded", () => {
         flashGreen(deArrowHideInitialCheckbox);
       });
     });
+
+    const deArrowHighlightReplacedTitlesCheckbox = document.getElementById(
+      "deArrow_highlightReplacedTitles",
+    ) as HTMLInputElement;
+    deArrowHighlightReplacedTitlesCheckbox.checked =
+      config.deArrow.highlightReplacedTitles;
+    deArrowHighlightReplacedTitlesCheckbox.addEventListener(
+      "change",
+      function () {
+        getConfig().then((config) => {
+          config.deArrow.highlightReplacedTitles =
+            deArrowHighlightReplacedTitlesCheckbox.checked;
+          browser.storage.local.set({ config });
+          flashGreen(deArrowHighlightReplacedTitlesCheckbox);
+        });
+      },
+    );
   });
 });
