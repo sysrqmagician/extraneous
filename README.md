@@ -18,10 +18,9 @@ A WebExtension for Invidious, written in TypeScript using Deno.
     - [x] Only show trusted titles
   - [x] Proper fallbacks
 - [x] Hide videos under certain duration or with title matching regex
+- [x] Additional Links
+  - [x] cobalt.tools in sidebar
 - [ ] Create collections of channels
-- [ ] Cobalt.tools integration
-  - [ ] Replace downloader section with cobalt.tools integration
-  - [ ] Offer to stream from cobalt.tools download on watch page error (if possible)
 
 
 ## Installing
