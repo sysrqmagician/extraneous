@@ -15,7 +15,8 @@ export function hideSlopFeed(
 ) {
   const minDuration = parseDurationSeconds(minDurationString);
   if (Number.isNaN(minDuration)) return;
-  const badTitleRegex = new RegExp(badTitleRegexString);
+  const badTitleRegex =
+    badTitleRegexString.length > 0 ? new RegExp(badTitleRegexString) : null;
 
   let removedCount = 0;
   for (const video of feed_videos) {
@@ -23,7 +24,7 @@ export function hideSlopFeed(
       pageType === PageType.Feed ? video.element.parentElement : video.element
     ) as HTMLDivElement;
 
-    if (badTitleRegex.test(video.title)) {
+    if (badTitleRegex && badTitleRegex.test(video.title)) {
       hideDiv(toRemove);
       removedCount++;
       continue;
