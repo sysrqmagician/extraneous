@@ -18,6 +18,9 @@ export type ExtensionConfig = {
     hideInitialThumbnail: boolean;
     highlightReplacedTitles: boolean;
   };
+  additionalLinks: {
+    cobaltTools: boolean;
+  };
 };
 
 /**
@@ -61,6 +64,9 @@ const default_config = {
     hideInitialThumbnail: false,
     highlightReplacedTitles: false,
   },
+  additionalLinks: {
+    cobaltTools: true,
+  },
 } as ExtensionConfig;
 
 function flashGreen(element: HTMLInputElement) {
@@ -70,125 +76,112 @@ function flashGreen(element: HTMLInputElement) {
   }, 200);
 }
 
+function setupCheckbox(
+  id: string,
+  getter: (c: ExtensionConfig) => boolean,
+  setter: (c: ExtensionConfig, val: boolean) => void,
+  config: ExtensionConfig,
+) {
+  const checkbox = document.getElementById(id) as HTMLInputElement;
+  checkbox.checked = getter(config);
+  checkbox.addEventListener("change", () => {
+    getConfig().then((config) => {
+      setter(config, checkbox.checked);
+      browser.storage.local.set({ config });
+      flashGreen(checkbox);
+    });
+  });
+}
+
+function setupInput(
+  id: string,
+  getter: (c: ExtensionConfig) => string,
+  setter: (c: ExtensionConfig, val: string) => void,
+  config: ExtensionConfig,
+) {
+  const input = document.getElementById(id) as HTMLInputElement;
+  input.value = getter(config);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      getConfig().then((config) => {
+        setter(config, input.value);
+        browser.storage.local.set({ config });
+        flashGreen(input);
+      });
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   getConfig().then((config) => {
-    const watchedEnabledCheckbox = document.getElementById(
+    setupCheckbox(
       "watched_enabled",
-    ) as HTMLInputElement;
-    watchedEnabledCheckbox.checked = config.watched.enabled;
-    watchedEnabledCheckbox.addEventListener("change", function () {
-      getConfig().then((config) => {
-        config.watched.enabled = watchedEnabledCheckbox.checked;
-        browser.storage.local.set({ config });
-      });
-    });
+      (c) => c.watched.enabled,
+      (c, val) => (c.watched.enabled = val),
+      config,
+    );
 
-    const watchedCssFilterInput = document.getElementById(
+    setupInput(
       "watched_cssFilter",
-    ) as HTMLInputElement;
-    watchedCssFilterInput.value = config.watched.cssFilter;
-    watchedCssFilterInput.addEventListener("keydown", function (e) {
-      if (e.key == "Enter") {
-        getConfig().then((config) => {
-          config.watched.cssFilter = watchedCssFilterInput.value;
-          browser.storage.local.set({ config });
-          flashGreen(watchedCssFilterInput);
-        });
-      }
-    });
+      (c) => c.watched.cssFilter,
+      (c, val) => (c.watched.cssFilter = val),
+      config,
+    );
 
-    const hideSlopEnabledCheckbox = document.getElementById(
+    setupCheckbox(
       "hideSlop_enabled",
-    ) as HTMLInputElement;
-    hideSlopEnabledCheckbox.checked = config.hideSlop.enabled;
-    hideSlopEnabledCheckbox.addEventListener("change", function () {
-      getConfig().then((config) => {
-        config.hideSlop.enabled = hideSlopEnabledCheckbox.checked;
-        browser.storage.local.set({ config });
-        flashGreen(hideSlopEnabledCheckbox);
-      });
-    });
+      (c) => c.hideSlop.enabled,
+      (c, val) => (c.hideSlop.enabled = val),
+      config,
+    );
 
-    const hideSlopBadTitleRegexInput = document.getElementById(
+    setupInput(
       "hideSlop_badTitleRegex",
-    ) as HTMLInputElement;
-    hideSlopBadTitleRegexInput.value = config.hideSlop.badTitleRegex;
-    hideSlopBadTitleRegexInput.addEventListener("keydown", function (e) {
-      if (e.key == "Enter") {
-        getConfig().then((config) => {
-          config.hideSlop.badTitleRegex = hideSlopBadTitleRegexInput.value;
-          browser.storage.local.set({ config });
-          flashGreen(hideSlopBadTitleRegexInput);
-        });
-      }
-    });
+      (c) => c.hideSlop.badTitleRegex,
+      (c, val) => (c.hideSlop.badTitleRegex = val),
+      config,
+    );
 
-    const hideSlopMinDurationInput = document.getElementById(
+    setupInput(
       "hideSlop_minDuration",
-    ) as HTMLInputElement;
-    hideSlopMinDurationInput.value = config.hideSlop.minDuration;
-    hideSlopMinDurationInput.addEventListener("keydown", function (e) {
-      if (e.key == "Enter") {
-        getConfig().then((config) => {
-          config.hideSlop.minDuration = hideSlopMinDurationInput.value;
-          browser.storage.local.set({ config });
-          flashGreen(hideSlopMinDurationInput);
-        });
-      }
-    });
+      (c) => c.hideSlop.minDuration,
+      (c, val) => (c.hideSlop.minDuration = val),
+      config,
+    );
 
-    const deArrowEnabledCheckbox = document.getElementById(
+    setupCheckbox(
       "deArrow_enabled",
-    ) as HTMLInputElement;
-    deArrowEnabledCheckbox.checked = config.deArrow.enabled;
-    deArrowEnabledCheckbox.addEventListener("change", function () {
-      getConfig().then((config) => {
-        config.deArrow.enabled = deArrowEnabledCheckbox.checked;
-        browser.storage.local.set({ config });
-        flashGreen(deArrowEnabledCheckbox);
-      });
-    });
+      (c) => c.deArrow.enabled,
+      (c, val) => (c.deArrow.enabled = val),
+      config,
+    );
 
-    const deArrowTrustedOnlyCheckbox = document.getElementById(
+    setupCheckbox(
       "deArrow_trustedOnly",
-    ) as HTMLInputElement;
-    deArrowTrustedOnlyCheckbox.checked = config.deArrow.trustedOnly;
-    deArrowTrustedOnlyCheckbox.addEventListener("change", function () {
-      getConfig().then((config) => {
-        config.deArrow.trustedOnly = deArrowTrustedOnlyCheckbox.checked;
-        browser.storage.local.set({ config });
-        flashGreen(deArrowTrustedOnlyCheckbox);
-      });
-    });
+      (c) => c.deArrow.trustedOnly,
+      (c, val) => (c.deArrow.trustedOnly = val),
+      config,
+    );
 
-    const deArrowHideInitialCheckbox = document.getElementById(
+    setupCheckbox(
       "deArrow_hideInitialThumbnail",
-    ) as HTMLInputElement;
-    deArrowHideInitialCheckbox.checked = config.deArrow.hideInitialThumbnail;
-    deArrowHideInitialCheckbox.addEventListener("change", function () {
-      getConfig().then((config) => {
-        config.deArrow.hideInitialThumbnail =
-          deArrowHideInitialCheckbox.checked;
-        browser.storage.local.set({ config });
-        flashGreen(deArrowHideInitialCheckbox);
-      });
-    });
+      (c) => c.deArrow.hideInitialThumbnail,
+      (c, val) => (c.deArrow.hideInitialThumbnail = val),
+      config,
+    );
 
-    const deArrowHighlightReplacedTitlesCheckbox = document.getElementById(
+    setupCheckbox(
       "deArrow_highlightReplacedTitles",
-    ) as HTMLInputElement;
-    deArrowHighlightReplacedTitlesCheckbox.checked =
-      config.deArrow.highlightReplacedTitles;
-    deArrowHighlightReplacedTitlesCheckbox.addEventListener(
-      "change",
-      function () {
-        getConfig().then((config) => {
-          config.deArrow.highlightReplacedTitles =
-            deArrowHighlightReplacedTitlesCheckbox.checked;
-          browser.storage.local.set({ config });
-          flashGreen(deArrowHighlightReplacedTitlesCheckbox);
-        });
-      },
+      (c) => c.deArrow.highlightReplacedTitles,
+      (c, val) => (c.deArrow.highlightReplacedTitles = val),
+      config,
+    );
+
+    setupCheckbox(
+      "additionalLinks_cobaltTools",
+      (c) => c.additionalLinks.cobaltTools,
+      (c, val) => (c.additionalLinks.cobaltTools = val),
+      config,
     );
   });
 });
