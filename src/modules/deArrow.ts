@@ -2,7 +2,7 @@
 import browser from "webextension-polyfill";
 import { BackgroundRequest, BackgroundResponse } from "../background.ts";
 import { VideoInfo } from "../extractor.ts";
-import { parseDurationSeconds } from "./hideslop.ts";
+import { parseDurationSeconds } from "./hideSlop.ts";
 import { ExtensionConfig } from "../config_popup.ts";
 
 const TITLE_TEXT_DECORATION: string = "underline dotted 1px";

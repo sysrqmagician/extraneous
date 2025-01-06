@@ -15,8 +15,9 @@ export function hideSlopFeed(
 ) {
   const minDuration = parseDurationSeconds(minDurationString);
   if (Number.isNaN(minDuration)) return;
-  const badTitleRegex =
-    badTitleRegexString.length > 0 ? new RegExp(badTitleRegexString) : null;
+  const badTitleRegex = badTitleRegexString.length > 0
+    ? new RegExp(badTitleRegexString)
+    : null;
 
   let removedCount = 0;
   for (const video of feed_videos) {

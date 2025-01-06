@@ -6,8 +6,8 @@ import {
 } from "./extractor.ts";
 import { ExtensionConfig, getConfig } from "./config_popup.ts";
 import { watchedFeed, watchedVideoPage } from "./modules/watched.ts";
-import { hideSlopFeed } from "./modules/hideslop.ts";
-import { deArrowFeed, deArrowVideoPage } from "./modules/dearrow.ts";
+import { hideSlopFeed } from "./modules/hideSlop.ts";
+import { deArrowFeed, deArrowVideoPage } from "./modules/deArrow.ts";
 
 export enum PageType {
   WatchVideo,
