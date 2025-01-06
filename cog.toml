@@ -12,3 +12,4 @@ path = "CHANGELOG.md"
 [commit_types]
 ci = { omit_from_changelog = true, changelog_title = "CI" }
 docs = { omit_from_changelog = true, changelog_title = "Documentation" }
+refactor = { omit_from_changelog = true, changelog_title = "Refactoring" }
