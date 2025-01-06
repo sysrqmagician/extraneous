@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.5.0 - 2025-01-06
+#### Bug Fixes
+- **(watched)** make the watched button readable in light-mode - (a85ac8b) - sysrqmagician
+#### Features
+- **(additionalLinks)** additionalLinks module with prefilled cobalt.tools link - (239e401) - sysrqmagician
+- **(hideSlop)** if regex is empty, don't evaluate title - (8bd14db) - sysrqmagician
+#### Miscellaneous Chores
+- update labels on GitHub issue templates - (26adb7a) - sysrqmagician
+#### Refactoring
+- camelCase module files - (70e28fe) - sysrqmagician
+
+- - -
+
 ## v1.4.0 - 2025-01-06
 #### Features
 - **(deArrow)** optionally highlight replaced titles - (8a1e2db) - sysrqmagician
