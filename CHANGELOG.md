@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.4.0 - 2025-01-06
+#### Features
+- **(deArrow)** optionally highlight replaced titles - (8a1e2db) - sysrqmagician
+
+- - -
+
 ## v1.3.0 - 2025-01-04
 #### Features
 - **(core)** style popup and give user feedback when saving input, closes #2 - (22d24b8) - sysrqmagician
