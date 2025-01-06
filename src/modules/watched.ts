@@ -16,6 +16,9 @@ const LABEL_UNWATCHED: string = "Unwatched";
 export function watchedVideoPage(currentVideo: VideoInfo) {
   const watchedButton: HTMLButtonElement = document.createElement("button");
   watchedButton.style.display = "inline-block";
+  watchedButton.style.background = "lightgray";
+  watchedButton.style.color = "black";
+
   currentVideo.element.parentElement
     ?.querySelector("h1") // get the title
     ?.appendChild(watchedButton);
