@@ -2,7 +2,7 @@
 name: Feature request
 about: Would you like the Extension to do something differently?
 title: ''
-labels: enhancement, triage
+labels: A/enhancement, B/triage
 assignees: ''
 
 ---

@@ -2,7 +2,7 @@
 name: Bug report
 about: Is the Extension behaving weirdly?
 title: ''
-labels: bug, triage
+labels: A/bug, B/triage
 assignees: ''
 
 ---
