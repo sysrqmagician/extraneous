@@ -28,7 +28,10 @@ export function deArrowVideoPage(
   );
   const previousThumbnailUrl = videoElement.poster;
 
-  if (config.deArrow.hideInitialThumbnail) {
+  if (
+    config.deArrow.hideInitialThumbnail &&
+    !config.deArrow.keepOriginalThumbnails
+  ) {
     videoElement.poster = "";
     if (vjsPosterElement) {
       vjsPosterElement.style.backgroundImage = "none";
@@ -50,7 +53,11 @@ export function deArrowVideoPage(
         "div.h-box > h1",
       ) as HTMLHeadingElement;
 
-      if (backgroundResponse.title && titleElement) {
+      if (
+        backgroundResponse.title &&
+        titleElement &&
+        !config.deArrow.keepOriginalTitles
+      ) {
         const textChild = titleElement.childNodes[0];
 
         if (textChild && textChild.nodeType == Node.TEXT_NODE) {
@@ -63,13 +70,15 @@ export function deArrowVideoPage(
         }
       }
 
-      if (vjsPosterElement) {
-        vjsPosterElement.style.backgroundImage = `url(${
-          backgroundResponse.thumbnailUri ?? previousThumbnailUrl
-        })`;
+      if (!config.deArrow.keepOriginalThumbnails) {
+        if (vjsPosterElement) {
+          vjsPosterElement.style.backgroundImage = `url(${
+            backgroundResponse.thumbnailUri ?? previousThumbnailUrl
+          })`;
+        }
+        videoElement.poster = backgroundResponse.thumbnailUri ??
+          previousThumbnailUrl;
       }
-      videoElement.poster = backgroundResponse.thumbnailUri ??
-        previousThumbnailUrl;
     });
 }
 
@@ -89,7 +98,10 @@ export function deArrowFeed(
     }
     const previousThumbnailUrl = thumbnailElement.getAttribute("src")!;
 
-    if (config.deArrow.hideInitialThumbnail) {
+    if (
+      config.deArrow.hideInitialThumbnail &&
+      !config.deArrow.keepOriginalThumbnails
+    ) {
       thumbnailElement.removeAttribute("src");
     }
 
@@ -104,7 +116,7 @@ export function deArrowFeed(
           { type: "deArrow" }
         >;
 
-        if (thumbnailElement) {
+        if (thumbnailElement && !config.deArrow.keepOriginalThumbnails) {
           thumbnailElement.setAttribute(
             "src",
             backgroundResponse.thumbnailUri ?? previousThumbnailUrl,
@@ -114,7 +126,11 @@ export function deArrowFeed(
         const titleElement = video.element.querySelector(
           "div.video-card-row > a > p[dir='auto']",
         ) as HTMLParagraphElement;
-        if (backgroundResponse.title && titleElement) {
+        if (
+          backgroundResponse.title &&
+          titleElement &&
+          !config.deArrow.keepOriginalTitles
+        ) {
           titleElement.setAttribute("title", video.title); // Set tooltip to original title
           titleElement.textContent = backgroundResponse.title;
           if (config.deArrow.highlightReplacedTitles) {

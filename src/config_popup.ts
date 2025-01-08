@@ -17,6 +17,8 @@ export type ExtensionConfig = {
     trustedOnly: boolean;
     hideInitialThumbnail: boolean;
     highlightReplacedTitles: boolean;
+    keepOriginalThumbnails: boolean;
+    keepOriginalTitles: boolean;
   };
   additionalLinks: {
     cobaltTools: boolean;
@@ -63,6 +65,8 @@ const default_config = {
     trustedOnly: true,
     hideInitialThumbnail: false,
     highlightReplacedTitles: false,
+    keepOriginalThumbnails: false,
+    keepOriginalTitles: false,
   },
   additionalLinks: {
     cobaltTools: true,
@@ -174,6 +178,20 @@ document.addEventListener("DOMContentLoaded", () => {
       "deArrow_highlightReplacedTitles",
       (c) => c.deArrow.highlightReplacedTitles,
       (c, val) => (c.deArrow.highlightReplacedTitles = val),
+      config,
+    );
+
+    setupCheckbox(
+      "deArrow_keepOriginalThumbnails",
+      (c) => c.deArrow.keepOriginalThumbnails,
+      (c, val) => (c.deArrow.keepOriginalThumbnails = val),
+      config,
+    );
+
+    setupCheckbox(
+      "deArrow_keepOriginalTitles",
+      (c) => c.deArrow.keepOriginalTitles,
+      (c, val) => (c.deArrow.keepOriginalTitles = val),
       config,
     );
 
