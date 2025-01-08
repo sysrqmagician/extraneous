@@ -64,7 +64,7 @@ const default_config = {
     enabled: true,
     trustedOnly: true,
     hideInitialThumbnail: false,
-    highlightReplacedTitles: false,
+    highlightReplacedTitles: true,
     keepOriginalThumbnails: false,
     keepOriginalTitles: false,
   },
