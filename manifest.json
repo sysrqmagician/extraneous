@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Extraneous",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Adds bloat to Invidious.",
   "permissions": ["storage", "*://inv.nadeko.net/*"],
   "browser_action": {

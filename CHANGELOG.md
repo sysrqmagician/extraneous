@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.6.0 - 2025-01-08
+#### Features
+- **(deArrow)** underline replaced titles by default - (de19f68) - sysrqmagician
+- **(deArrow)** options to stop replacing titles/thumbnails - (8af371a) - sysrqmagician
+
+- - -
+
 ## v1.5.0 - 2025-01-06
 #### Bug Fixes
 - **(watched)** make the watched button readable in light-mode - (a85ac8b) - sysrqmagician
