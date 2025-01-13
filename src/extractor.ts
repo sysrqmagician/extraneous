@@ -109,7 +109,9 @@ export function extractCurrentVideo(): VideoInfo {
   if (!channelId) throw new VideoExtractorError("Could not find channel ID");
   const videoLink = normalizeUrl(
     `${document.location.pathname}?v=${
-      new URLSearchParams(document.location.search).get("v")
+      new URLSearchParams(
+        document.location.search,
+      ).get("v")
     }`,
   );
   if (!videoLink) throw new VideoExtractorError("Could not find video link");
@@ -198,9 +200,7 @@ export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
             try {
               return extractFeed(x);
             } catch (e) {
-              console.log(
-                `Error while extracting video information for ${x}: ${e}`,
-              );
+              console.log(`Error while extracting video information: ${e}`, x);
               return null;
             }
           })
