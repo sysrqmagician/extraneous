@@ -8,7 +8,10 @@ import { ExtensionConfig, getConfig } from "./config_popup.ts";
 import { watchedFeed, watchedVideoPage } from "./modules/watched.ts";
 import { hideSlopFeed } from "./modules/hideSlop.ts";
 import { deArrowFeed, deArrowVideoPage } from "./modules/deArrow.ts";
-import { additionalLinksVideoPage } from "./modules/additionalLinks.ts";
+import {
+  additionalLinksErrorPage,
+  additionalLinksVideoPage,
+} from "./modules/additionalLinks.ts";
 
 export enum PageType {
   WatchVideo,
@@ -36,6 +39,10 @@ async function injectScript() {
 
   const config = await getConfig();
   if (pageType == PageType.WatchVideo) {
+    if (document.getElementsByTagName("video").length === 0) {
+      additionalLinksErrorPage(config);
+    }
+
     const currentVideo = extractCurrentVideo();
     if (config.watched.enabled) watchedVideoPage(currentVideo);
     if (config.deArrow.enabled) deArrowVideoPage(currentVideo, config);
