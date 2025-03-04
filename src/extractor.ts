@@ -178,9 +178,8 @@ export function extractMiniPlaylistVideo(videoLi: Element): VideoInfo {
  */
 export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
   let videos: Array<VideoInfo> = [];
-  const video_iterator = document
-    .querySelectorAll("div[class = 'video-card-row']")
-    .values()
+  const video_iterator = Array.from(document
+    .querySelectorAll("div[class = 'video-card-row']"))
     .map((x) => x.parentElement as HTMLDivElement);
 
   // It is likely that the document will have breaking changes,
