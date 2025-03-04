@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.7.0 - 2025-03-04
+#### Bug Fixes
+- **(core)** properly log erroring video element while extracting info - (0cc96ca) - sysrqmagician
+#### Features
+- **(additionalLinks)** Add cobalt tools link to watch error page - (d1c02ad) - sysrqmagician
+- **(core)** Improve compatibility of extraction - (d269746) - sysrqmagician
+
+- - -
+
 ## v1.6.0 - 2025-01-08
 #### Features
 - **(deArrow)** underline replaced titles by default - (de19f68) - sysrqmagician
