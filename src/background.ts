@@ -7,7 +7,6 @@ import { getConfig } from "./config_popup.ts";
  * Types of requests that can be sent to the background script
  */
 export type BackgroundRequest =
-  | { type: "echo" }
   | { type: "isWatched"; videoId: string }
   | { type: "setWatched"; videoId: string; value: boolean }
   | { type: "deArrow"; videoId: string; videoDuration: number | null };
@@ -16,7 +15,6 @@ export type BackgroundRequest =
  * Types of responses that can be returned from the background script
  */
 export type BackgroundResponse =
-  | { type: "echo"; response: string }
   | { type: "isWatched"; value: boolean }
   | { type: "completed" }
   | { type: "error"; description: string }
@@ -80,11 +78,6 @@ browser.runtime.onMessage.addListener(
 
     // Process the message and send a response
     switch (request.type) {
-      case "echo":
-        return {
-          type: "echo",
-          response: "Echo!",
-        };
       case "deArrow":
         return await handleDeArrow(request);
       case "isWatched":
@@ -174,8 +167,8 @@ async function handleDeArrow(
       } else {
         // The server usually doesn't know the duration,
         // so we supplement the response with locally obtained information, if available.
-        const videoDuration = videoBranding.videoDuration ??
-          request.videoDuration;
+        const videoDuration =
+          videoBranding.videoDuration ?? request.videoDuration;
 
         if (videoDuration !== null) {
           thumbnailTime = videoBranding.randomTime * videoDuration;
@@ -202,9 +195,8 @@ async function handleDeArrow(
           brandingTitle.votes >= 0
         ) {
           // Remove DeArrow auto-formatting ignore indicator '>'
-          title = videoBranding.titles[0].title.replace(
-            />[^\s]/g,
-            (match) => match.substring(1),
+          title = videoBranding.titles[0].title.replace(/>[^\s]/g, (match) =>
+            match.substring(1),
           );
         }
 
