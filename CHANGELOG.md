@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.8.1 - 2025-05-31
+#### Bug Fixes
+- **(core)** stop importing content scripts - (492af17) - sysrqmagician
+
+- - -
+
 ## v1.8.0 - 2025-05-31
 #### Features
 - **(popup)** Add data import/export/reset - (be2fa80) - sysrqmagician
