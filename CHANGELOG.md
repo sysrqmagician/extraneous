@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.8.0 - 2025-05-31
+#### Features
+- **(popup)** Add data import/export/reset - (be2fa80) - sysrqmagician
+#### Miscellaneous Chores
+- **(core)** clean up injectScript - (c86eae4) - sysrqmagician
+- **(core)** remove echo background request - (5163919) - sysrqmagician
+
+- - -
+
 ## v1.7.0 - 2025-03-04
 #### Bug Fixes
 - **(core)** properly log erroring video element while extracting info - (0cc96ca) - sysrqmagician
