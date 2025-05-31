@@ -8,6 +8,7 @@ async function build() {
       entryPoints: [
         "./src/content.ts",
         "./src/config_popup.ts",
+        "./src/config_popup_data.ts",
         "./src/background.ts",
       ],
       outdir: "./dist",

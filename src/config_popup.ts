@@ -203,3 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 });
+
+document.getElementById("data_opentab")!.addEventListener("click", () => {
+  browser.tabs.create({ url: browser.runtime.getURL("popup/data.html") });
+});

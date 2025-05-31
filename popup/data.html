@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+            body {
+                background-color: #f9f9fb;
+                color: #15141a;
+                padding: 5px;
+                font-family: sans-serif;
+            }
+            a {
+                color: #0090ed;
+            }
+            span {
+                white-space: nowrap;
+            }
+            .flash-green {
+                outline: 2px solid #2ac3a2;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Extraneous Settings</h3>
+        <h4>Extension Data</h4>
+        <button id="data_export">Export</button>
+        <button id="data_import">Import</button>
+        <button id="data_reset">Reset</button>
+        <p>
+            Unfortunately, this section had to be moved into a full page due to
+            <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1292701"
+                >an unfixed bug in Firefox</a
+            >.
+        </p>
+        <p id="output"></p>
+        <script src="../dist/config_popup_data.js"></script>
+    </body>
+</html>
