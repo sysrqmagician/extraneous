@@ -23,7 +23,7 @@ export enum PageType {
 async function injectScript() {
   if (document.head.querySelector("link[title='Invidious']") === null) return;
 
-  let pageType;
+  let pageType = PageType.Unknown;
   if (document.location.pathname === "/watch") {
     pageType = PageType.WatchVideo;
   } else if (
@@ -33,8 +33,6 @@ async function injectScript() {
     document.location.pathname.startsWith("/playlist")
   ) {
     pageType = PageType.Feed;
-  } else {
-    pageType = PageType.Unknown;
   }
 
   const config = await getConfig();
