@@ -1,4 +1,4 @@
-import { ExtensionConfig } from "../config_popup.ts";
+import { ExtensionConfig } from "../config.ts";
 import { VideoInfo } from "../extractor.ts";
 
 export function additionalLinksVideoPage(

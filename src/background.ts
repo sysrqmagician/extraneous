@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-unused-vars
 // @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
-import { getConfig } from "./config_popup.ts";
+import { getConfig } from "./config.ts";
 
 /**
  * Types of requests that can be sent to the background script

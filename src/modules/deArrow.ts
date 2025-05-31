@@ -3,7 +3,7 @@ import browser from "webextension-polyfill";
 import { BackgroundRequest, BackgroundResponse } from "../background.ts";
 import { VideoInfo } from "../extractor.ts";
 import { parseDurationSeconds } from "./hideSlop.ts";
-import { ExtensionConfig } from "../config_popup.ts";
+import { ExtensionConfig } from "../config.ts";
 
 const TITLE_TEXT_DECORATION: string = "underline dotted 1px";
 
@@ -23,9 +23,8 @@ export function deArrowVideoPage(
   if (!videoElement) {
     throw new Error("Unable to get video element");
   }
-  const vjsPosterElement: HTMLDivElement | null = document.querySelector(
-    "div.vjs-poster",
-  );
+  const vjsPosterElement: HTMLDivElement | null =
+    document.querySelector("div.vjs-poster");
   const previousThumbnailUrl = videoElement.poster;
 
   if (
@@ -76,8 +75,8 @@ export function deArrowVideoPage(
             backgroundResponse.thumbnailUri ?? previousThumbnailUrl
           })`;
         }
-        videoElement.poster = backgroundResponse.thumbnailUri ??
-          previousThumbnailUrl;
+        videoElement.poster =
+          backgroundResponse.thumbnailUri ?? previousThumbnailUrl;
       }
     });
 }

@@ -2,7 +2,7 @@
 import browser from "webextension-polyfill";
 import { BackgroundRequest, BackgroundResponse } from "../background.ts";
 import { VideoInfo } from "../extractor.ts";
-import { ExtensionConfig } from "../config_popup.ts";
+import { ExtensionConfig } from "../config.ts";
 
 /** Button text for watched videos */
 const LABEL_WATCHED: string = "Watched";
