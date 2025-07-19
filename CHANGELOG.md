@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.9.0 - 2025-07-19
+#### Features
+- **(core)** Add debug data export - (78e0823) - sysrqmagician
+- **(popup)** nicer styling for text note - (c04eef3) - sysrqmagician
+- **(popup)** Apply changes when unfocusing text input - (ebd86ea) - sysrqmagician
+
+- - -
+
 ## v1.8.1 - 2025-05-31
 #### Bug Fixes
 - **(core)** stop importing content scripts - (492af17) - sysrqmagician
