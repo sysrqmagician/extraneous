@@ -34,13 +34,19 @@ function setupInput(
 ) {
   const input = document.getElementById(id) as HTMLInputElement;
   input.value = getter(config);
+
+  const apply = () => {
+    getConfig().then((config) => {
+      setter(config, input.value);
+      browser.storage.local.set({ config });
+      flashGreen(input);
+    });
+  };
+
+  input.addEventListener("blur", apply);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      getConfig().then((config) => {
-        setter(config, input.value);
-        browser.storage.local.set({ config });
-        flashGreen(input);
-      });
+      apply();
     }
   });
 }
