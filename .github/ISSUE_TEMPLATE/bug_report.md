@@ -24,9 +24,9 @@ Steps to reproduce the behavior:
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. Debian]
- - Browser version [e.g. Firefox 134]
+**Please paste the debug information provided by the extension here.**
+To obtain the debug information, open the extension pop-up menu using the icon. Click "Manage Data". Click "Get Debug Information" on the page that opens. The text area below the button should now contain the debug information.
+
 
 **Additional context**
 Add any other context about the problem here.

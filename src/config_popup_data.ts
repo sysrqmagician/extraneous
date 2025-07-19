@@ -1,5 +1,6 @@
 // @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
+import { getConfig } from "./config.ts";
 
 const output = document.getElementById("output") as HTMLParagraphElement;
 const data_export = document.getElementById("data_export") as HTMLButtonElement;
@@ -25,7 +26,6 @@ data_import.addEventListener("click", () => {
   fileInput.style.display = "none";
 
   fileInput.addEventListener("change", async (event) => {
-    console.log("fired");
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
@@ -46,4 +46,26 @@ const data_reset = document.getElementById("data_reset") as HTMLButtonElement;
 data_reset.addEventListener("click", async () => {
   await browser.storage.local.clear();
   output.innerText = "Cleared storage.";
+});
+
+const data_debug = document.getElementById("data_debug") as HTMLButtonElement;
+const debug_out = document.getElementById(
+  "output_debug",
+) as HTMLTextAreaElement;
+data_debug.addEventListener("click", async () => {
+  debug_out.textContent = `**Platform Info**
+\`\`\`json
+${JSON.stringify(await browser.runtime.getPlatformInfo(), null, 2)}
+\`\`\`
+
+**Browser Info**
+\`\`\`json
+${JSON.stringify(await browser.runtime.getBrowserInfo(), null, 2)}
+\`\`\`
+
+**Config**
+\`\`\`json
+${JSON.stringify(await getConfig(), null, 2)}
+\`\`\`
+`;
 });
