@@ -23,8 +23,9 @@ export function deArrowVideoPage(
   if (!videoElement) {
     throw new Error("Unable to get video element");
   }
-  const vjsPosterElement: HTMLDivElement | null =
-    document.querySelector("div.vjs-poster");
+  const vjsPosterElement: HTMLDivElement | null = document.querySelector(
+    "div.vjs-poster",
+  );
   const previousThumbnailUrl = videoElement.poster;
 
   if (
@@ -75,8 +76,8 @@ export function deArrowVideoPage(
             backgroundResponse.thumbnailUri ?? previousThumbnailUrl
           })`;
         }
-        videoElement.poster =
-          backgroundResponse.thumbnailUri ?? previousThumbnailUrl;
+        videoElement.poster = backgroundResponse.thumbnailUri ??
+          previousThumbnailUrl;
       }
     });
 }

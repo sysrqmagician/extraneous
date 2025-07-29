@@ -1,5 +1,7 @@
 // @deno-types="npm:@types/webextension-polyfill"
 import browser from "webextension-polyfill";
+import * as collections from "@std/collections";
+
 import { getConfig } from "./config.ts";
 
 const output = document.getElementById("output") as HTMLParagraphElement;
@@ -32,6 +34,37 @@ data_import.addEventListener("click", () => {
     try {
       await browser.storage.local.clear();
       await browser.storage.local.set(JSON.parse(await file.text()));
+      output.innerText = "Restored data successfully.";
+    } catch (error) {
+      output.innerText = `Failed to restore: ${error}`;
+    }
+  });
+
+  document.body.appendChild(fileInput);
+  fileInput.click();
+});
+
+const data_import_add = document.getElementById(
+  "data_import_add",
+) as HTMLButtonElement;
+data_import_add.addEventListener("click", () => {
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".json";
+  fileInput.style.display = "none";
+
+  fileInput.addEventListener("change", async (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    try {
+      const currentData = await browser.storage.local.get(null);
+      const importData = JSON.parse(await file.text());
+      const mergedData = collections.deepMerge(importData, currentData, {
+        arrays: "replace",
+      });
+
+      await browser.storage.local.set(mergedData);
       output.innerText = "Imported data successfully.";
     } catch (error) {
       output.innerText = `Failed to import: ${error}`;
