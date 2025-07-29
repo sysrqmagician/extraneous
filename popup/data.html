@@ -1,45 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <style>
-            body {
-                background-color: #f9f9fb;
-                color: #15141a;
-                padding: 5px;
-                font-family: sans-serif;
-            }
-            a {
-                color: #0090ed;
-            }
-            span {
-                white-space: nowrap;
-            }
-            .flash-green {
-                outline: 2px solid #2ac3a2;
-            }
-        </style>
-    </head>
-    <body>
-        <h3>Extraneous Settings</h3>
-        <h4>Extension Data</h4>
-        <button id="data_export">Export</button>
-        <button id="data_import">Import</button>
-        <button id="data_reset">Reset</button>
-        <p>
-            Unfortunately, this section had to be moved into a full page due to
-            <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1292701"
-                >an unfixed bug in Firefox</a
-            >.
-        </p>
-        <p id="output"></p>
-        <br />
-        <button id="data_debug">Get Debug Information</button>
-        <br />
-        <textarea
-            id="output_debug"
-            style="min-width: 530px; min-height: 650px"
-        ></textarea>
-        <script src="../dist/config_popup_data.js"></script>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        background-color: #f9f9fb;
+        color: #15141a;
+        padding: 5px;
+        font-family: sans-serif;
+      }
+      a {
+        color: #0090ed;
+      }
+      span {
+        white-space: nowrap;
+      }
+      .flash-green {
+        outline: 2px solid #2ac3a2;
+      }
+      td > button {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Extraneous Settings</h3>
+    <p>
+      Unfortunately, this section had to be moved into a full page due to
+      <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1292701"
+      >an unfixed bug in Firefox</a>.
+    </p>
+
+    <h4>Extension Data</h4>
+    <table>
+      <tr>
+        <td>
+          <button id="data_export">Export Backup</button>
+          <br />
+        </td>
+        <td><span>Save a file containing all extension data.</span></td>
+      </tr>
+      <tr>
+        <td>
+          <button id="data_import">Restore Backup</button>
+          <br />
+        </td>
+        <td>
+          <span><strong>Destructive.</strong> Restore state from a backup file,
+            overwriting all current data.</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button id="data_reset">Reset</button>
+          <br />
+        </td>
+        <td>
+          <span><strong>Destructive.</strong> Delete all entries from local
+            storage.</span>
+        </td>
+      </tr>
+    </table>
+    <p id="output"></p>
+    <br />
+
+    <h4>Debug Information</h4>
+    <button id="data_debug">Get Debug Information</button>
+    <br />
+    <textarea
+      id="output_debug"
+      style="min-width: 530px; min-height: 650px"
+    ></textarea>
+    <script src="../dist/config_popup_data.js"></script>
+  </body>
 </html>
