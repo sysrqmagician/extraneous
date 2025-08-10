@@ -178,9 +178,9 @@ export function extractMiniPlaylistVideo(videoLi: Element): VideoInfo {
  */
 export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
   let videos: Array<VideoInfo> = [];
-  const video_iterator = Array.from(document
-    .querySelectorAll("div[class = 'video-card-row']"))
-    .map((x) => x.parentElement as HTMLDivElement);
+  const video_iterator = Array.from(
+    document.querySelectorAll("div[class = 'video-card-row']"),
+  ).map((x) => x.parentElement as HTMLDivElement);
 
   // It is likely that the document will have breaking changes,
   // so I split these into methods for easy maintenance.
@@ -188,7 +188,19 @@ export function extractFeedFromPage(pageType: PageType): Array<VideoInfo> {
   // For now, they are all using the same extractor.
   switch (pageType) {
     case PageType.WatchVideo:
-      videos = Array.from(video_iterator.map((x) => extractWatchNext(x)));
+      videos = Array.from(
+        video_iterator
+          .map((x) => {
+            try {
+              return extractWatchNext(x);
+            } catch (e) {
+              // TODO: Make channel link optional due to properly handle multi-channel videos (#15)
+              console.log(`Error while extracting video information: ${e}`, x);
+              return null;
+            }
+          })
+          .filter((x) => x !== null),
+      );
       break;
     case PageType.Feed:
       videos = Array.from(
