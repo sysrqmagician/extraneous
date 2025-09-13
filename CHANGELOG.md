@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.11.0 - 2025-09-13
+#### Miscellaneous Chores
+- **(version)** v1.10.0 - (0f100db) - sysrqmagician
+
+- - -
+
 ## v1.10.0 - 2025-09-13
 #### Bug Fixes
 - **(core)** Extractor no longer aborts on error in watch next - (8fbe754) - sysrqmagician
