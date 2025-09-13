@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.10.0 - 2025-09-13
+#### Bug Fixes
+- **(core)** Extractor no longer aborts on error in watch next - (8fbe754) - sysrqmagician
+#### Features
+- **(popup)** Merge data from backup ('Import Missing') - (c89420f) - sysrqmagician
+
+- - -
+
 ## v1.9.0 - 2025-07-19
 #### Features
 - **(core)** Add debug data export - (78e0823) - sysrqmagician
