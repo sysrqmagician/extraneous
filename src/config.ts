@@ -1,4 +1,4 @@
-// @deno-types="npm:@types/webextension-polyfill"
+// @deno-types="webextension-polyfill-types"
 import browser from "webextension-polyfill";
 import * as collections from "@std/collections";
 

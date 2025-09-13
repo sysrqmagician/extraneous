@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
-// @deno-types="npm:@types/webextension-polyfill"
+// @deno-types="webextension-polyfill-types"
 import browser from "webextension-polyfill";
 import { getConfig } from "./config.ts";
 
@@ -167,8 +167,8 @@ async function handleDeArrow(
       } else {
         // The server usually doesn't know the duration,
         // so we supplement the response with locally obtained information, if available.
-        const videoDuration = videoBranding.videoDuration ??
-          request.videoDuration;
+        const videoDuration =
+          videoBranding.videoDuration ?? request.videoDuration;
 
         if (videoDuration !== null) {
           thumbnailTime = videoBranding.randomTime * videoDuration;
@@ -195,9 +195,8 @@ async function handleDeArrow(
           brandingTitle.votes >= 0
         ) {
           // Remove DeArrow auto-formatting ignore indicator '>'
-          title = videoBranding.titles[0].title.replace(
-            />[^\s]/g,
-            (match) => match.substring(1),
+          title = videoBranding.titles[0].title.replace(/>[^\s]/g, (match) =>
+            match.substring(1),
           );
         }
 
