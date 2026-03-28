@@ -91,7 +91,10 @@ function normalizeUrl(pathName: string | null | undefined): URL | null {
  * Extracts information about the currently playing video
  */
 export function extractCurrentVideo(): VideoInfo {
-  const listenLink = document.querySelector("i.icon.ion-md-headset");
+  let listenLink = document.querySelector("i.icon.ion-md-headset");
+  if (!listenLink) {
+    listenLink = document.querySelector("i.icon.ion-ios-videocam");
+  }
   const title = listenLink?.parentElement?.parentElement?.innerText.trim();
   if (!title) throw new VideoExtractorError("Could not find video title");
   const channelNameElement = document.querySelector("div.channel-profile");
