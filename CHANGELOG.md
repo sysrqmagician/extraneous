@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.10.2 - 2026-03-28
+#### Bug Fixes
+- (**extractor**) extract correctly when audio-only - (4f73a76) - sysrqmagician
+
+- - -
+
 ## v1.10.1 - 2025-09-13
 #### Miscellaneous Chores
 - **(version)** v1.10.0 - (0f100db) - sysrqmagician
