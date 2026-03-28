@@ -24,7 +24,10 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "extraneous@sysrqmagician.github.io"
-    }
+      "id": "extraneous@sysrqmagician.github.io",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
   }
 }
